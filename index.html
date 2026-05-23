@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DM Session Prep Helper</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts für fantastischen D&D Look und hohe Lesbarkeit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- PWA Manifest Integration -->
+    <link rel="manifest" href="data:application/manifest+json;base64,ewogICJuYW1lIjogIkRNIFNlc3Npb24gUHJlcCBIZWxwZXIiLAogICJzaG9ydF9uYW1lIjogIkRNIFByZXAiLAogICJzdGFydF91cmwiOiAiLiIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiI2Y0ZWZkYyIsCiAgInRoZW1lX2NvbG9yIjogIiM3YTFjMWMiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWwsPHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJz48Y2lyY2xlIGN4PScyNTYnIGN5PScyNTYnIHI9JzI0MCcgZmlsbD0nIzdhMWMxYycvPjx0ZXh0IHgpxzUwJScgeT0nNjAlJyBmb250LXNpemU9JzI0MCcgZmlsbD0nI2Y0ZWZkYycgZm9udC1mYW1pbHk9J0NpbnplbCcgdGV4dC1hbmNob3I9J21pZGRsZSc+RE08L3RleHQ+PC9zdmc+IiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIiwKICAgICAgInB1cnBvc2UiOiAiYW55IG1hc2thYmxlIgogICAgfQogIF0KfQ==">
+
+    <script>
+        // Tailwind Konfiguration für D&D-Thema
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        parchment: {
+                            light: '#fdfbf7',
+                            DEFAULT: '#f5f0e6',
+                            dark: '#eadeca',
+                            accent: '#dfd2b9'
+                        },
+                        dragon: {
+                            gold: '#b8860b',
+                            red: '#7a1c1c',
+                            redDark: '#561010',
+                            charcoal: '#2c221e'
+                        }
+                    },
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Spezifische Styling-Anpassungen */
+        body {
+            background-color: #1a1412;
+            background-image: radial-gradient(#2c1f1b 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .parchment-texture {
+            background-color: #f5f0e6;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='100' height='100' fill='%23f5f0e6'/%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #2c221e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #7a1c1c;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #b8860b;
+        }
+    </style>
+</head>
+<body class="font-sans text-dragon-charcoal min-h-screen flex flex-col antialiased">
+
+    <!-- Header -->
+    <header class="border-b-4 border-dragon-gold bg-dragon-charcoal text-parchment py-4 md:py-6 px-4 shadow-xl relative z-10">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="text-center sm:text-left">
+                <p class="text-[10px] md:text-xs uppercase tracking-widest text-dragon-gold font-bold">Spielleiter Werkzeug</p>
+                <h1 class="font-cinzel text-2xl md:text-4xl font-black tracking-wide text-parchment-light">DM SESSION PREP</h1>
+            </div>
+            <!-- Session Title -->
+            <div class="flex items-center w-full sm:w-auto">
+                <input type="text" id="session-title" value="Meine epische Session 1" 
+                    class="bg-dragon-redDark text-parchment font-cinzel font-bold border border-dragon-gold rounded px-3 py-2 sm:py-1.5 focus:outline-none focus:ring-2 focus:ring-dragon-gold w-full sm:w-64 text-center sm:text-left shadow-inner text-sm md:text-base"
+                    placeholder="Sitzungstitel..." oninput="saveData()">
+            </div>
+        </div>
+    </header>
+
+    <!-- Hauptbereich -->
+    <main class="flex-grow max-w-4xl w-full mx-auto p-3 md:p-4 md:py-8 flex flex-col gap-4 md:gap-6">
+        
+        <!-- Status- und Kontrollleiste (Verbessert für Mobile Tabs) -->
+        <div class="flex flex-col gap-3 bg-dragon-charcoal border border-dragon-gold/30 p-3 rounded-lg text-sm text-parchment shadow-md">
+            <div class="flex items-center justify-between w-full">
+                <div class="flex items-center gap-2">
+                    <span class="font-cinzel text-dragon-gold font-bold text-xs md:text-sm">Fortschritt:</span>
+                    <span id="progress-text" class="font-mono bg-dragon-redDark px-2 py-0.5 rounded text-xs">0 / 24 beantwortet</span>
+                </div>
+                <div class="flex-grow h-2 max-w-xs bg-dragon-redDark rounded-full overflow-hidden mx-4 hidden md:block">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-dragon-gold to-yellow-500 transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+            
+            <!-- Mobile-Optimierte Tab Bar -->
+            <div class="grid grid-cols-3 gap-1 bg-dragon-redDark p-1 rounded-lg w-full">
+                <button onclick="switchView('focus')" id="btn-view-focus" class="px-2 py-2 text-xs md:text-sm rounded font-cinzel font-bold text-center transition">
+                    🔍 Fokus
+                </button>
+                <button onclick="switchView('overview')" id="btn-view-overview" class="px-2 py-2 text-xs md:text-sm rounded font-cinzel font-bold text-center transition">
+                    📋 Übersicht
+                </button>
+                <button onclick="switchView('export')" id="btn-view-export" class="px-2 py-2 text-xs md:text-sm rounded font-cinzel font-bold text-center transition">
+                    💾 Export/Import
+                </button>
+            </div>
+        </div>
+
+        <!-- Notification Banner (für Erfolgs-/Fehlermeldungen beim Importieren) -->
+        <div id="notification-banner" class="hidden transition-all duration-300 p-3 rounded-lg text-center font-bold text-sm shadow-md"></div>
+
+        <!-- 1. FOKUS MODUS (Eine Frage nach der anderen) -->
+        <section id="view-focus" class="flex-grow flex flex-col justify-center">
+            <div class="parchment-texture border-4 border-dragon-gold rounded-xl shadow-2xl p-4 md:p-8 relative flex flex-col min-h-[340px] md:min-h-[400px] justify-between transition-all">
+                
+                <!-- D&D Dekoration -->
+                <div class="hidden sm:block absolute top-2 left-2 text-dragon-gold text-lg select-none opacity-40">⚔</div>
+                <div class="hidden sm:block absolute top-2 right-2 text-dragon-gold text-lg select-none opacity-40">⚔</div>
+                <div class="hidden sm:block absolute bottom-2 left-2 text-dragon-gold text-lg select-none opacity-40">⚔</div>
+                <div class="hidden sm:block absolute bottom-2 right-2 text-dragon-gold text-lg select-none opacity-40">⚔</div>
+
+                <!-- Kategorie-Badge & Fragenzähler -->
+                <div class="flex justify-between items-center border-b border-dragon-gold/30 pb-3 mb-3">
+                    <span id="focus-category-badge" class="font-cinzel font-black text-lg md:text-2xl text-dragon-red tracking-wider uppercase">
+                        KATEGORIE
+                    </span>
+                    <span id="focus-queue-index" class="text-[10px] md:text-xs bg-dragon-accent px-2 py-1 rounded-full font-bold font-mono text-dragon-charcoal">
+                        Frage 1 von 24
+                    </span>
+                </div>
+
+                <!-- Die Frage -->
+                <div class="my-2">
+                    <h3 id="focus-question-text" class="font-cinzel text-base md:text-xl font-bold text-dragon-charcoal mb-3 italic">
+                        Frage Text hier?
+                    </h3>
+                    <textarea id="focus-answer-input" 
+                        class="w-full h-32 md:h-44 p-3 border-2 border-dragon-accent rounded-lg bg-white/70 focus:bg-white focus:outline-none focus:border-dragon-red transition text-sm md:text-base leading-relaxed placeholder-dragon-accent"
+                        placeholder="Schreibe deine Gedanken hier auf..."
+                        oninput="saveCurrentFocusAnswer()"></textarea>
+                </div>
+
+                <!-- Steuerungstasten (Optimiertes Mobile Layout) -->
+                <div class="flex flex-col gap-2.5 mt-4 pt-3 border-t border-dragon-gold/20">
+                    <div class="grid grid-cols-2 gap-2 w-full">
+                        <button onclick="prevQuestion()" class="py-3 sm:py-2 px-4 font-cinzel font-bold text-xs md:text-sm bg-dragon-accent hover:bg-dragon-gold/30 rounded-lg transition text-dragon-charcoal text-center flex items-center justify-center gap-1">
+                            ← Zurück
+                        </button>
+                        <button onclick="nextQuestion()" class="py-3 sm:py-2 px-4 font-cinzel font-bold text-xs md:text-sm bg-dragon-red text-white hover:bg-dragon-redDark rounded-lg transition text-center flex items-center justify-center gap-1">
+                            Weiter →
+                        </button>
+                    </div>
+                    
+                    <button onclick="postponeCurrentQuestion()" class="w-full py-3 sm:py-2 px-4 font-cinzel font-bold text-xs md:text-sm bg-amber-500 text-dragon-charcoal hover:bg-amber-400 rounded-lg transition shadow-md flex items-center justify-center gap-1">
+                        ⏱ Später beantworten (Nach hinten stellen)
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. ÜBERSICHTS MODUS (Alle Fragen kategorisiert) -->
+        <section id="view-overview" class="hidden space-y-4 md:space-y-6">
+            <div class="parchment-texture border-2 border-dragon-gold rounded-xl p-4 md:p-6 shadow-xl">
+                <h2 class="font-cinzel text-xl md:text-2xl font-black text-dragon-red border-b border-dragon-gold pb-2 mb-4 md:mb-6 text-center">
+                    VORBEREITUNGS-ÜBERSICHT
+                </h2>
+                
+                <div id="overview-categories-container" class="space-y-4 md:space-y-6">
+                    <!-- Dynamisch befüllt -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. EXPORT & IMPORT MODUS -->
+        <section id="view-export" class="hidden flex flex-col gap-6">
+            <!-- Split Layout für Desktop, gestapelt für Mobile -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- EXPORT-BEREICH (Links) -->
+                <div class="parchment-texture border-2 border-dragon-gold rounded-xl p-4 md:p-6 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <h2 class="font-cinzel text-xl font-black text-dragon-red border-b border-dragon-gold pb-2 mb-3 text-center">
+                            DATEN EXPORTIEREN
+                        </h2>
+                        <p class="text-xs text-dragon-charcoal/80 mb-4 text-center">
+                            Wähle das Format aus und kopiere deine Arbeit oder lade sie als Datei herunter.
+                        </p>
+
+                        <!-- Format-Auswahl Grid-cols-3 -->
+                        <div class="grid grid-cols-3 gap-1.5 mb-4 max-w-sm mx-auto">
+                            <button onclick="generateExport('markdown')" id="btn-export-markdown" class="px-2 py-2 bg-dragon-red text-white rounded font-cinzel font-bold transition text-xs text-center shadow">
+                                MD (Markdown)
+                            </button>
+                            <button onclick="generateExport('plain')" id="btn-export-plain" class="px-2 py-2 bg-dragon-accent text-dragon-charcoal rounded font-cinzel font-bold transition text-xs text-center shadow">
+                                Text (.txt)
+                            </button>
+                            <button onclick="generateExport('json')" id="btn-export-json" class="px-2 py-2 bg-dragon-accent text-dragon-charcoal rounded font-cinzel font-bold transition text-xs text-center shadow">
+                                JSON (.json)
+                            </button>
+                        </div>
+
+                        <!-- Textbereich mit Export-Ausgabe -->
+                        <div class="relative">
+                            <textarea id="export-textarea" readonly class="w-full h-64 p-3 border border-dragon-accent bg-white/50 rounded font-mono text-xs focus:outline-none"></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Aktionsbuttons für den Export -->
+                    <div class="grid grid-cols-2 gap-2 mt-4">
+                        <button onclick="copyToClipboard()" class="py-2.5 bg-dragon-charcoal text-parchment-light hover:bg-dragon-red rounded text-xs font-bold transition flex items-center justify-center gap-1">
+                            📋 Kopieren
+                        </button>
+                        <button onclick="downloadExportFile()" class="py-2.5 bg-dragon-red hover:bg-dragon-redDark text-white rounded text-xs font-bold transition flex items-center justify-center gap-1">
+                            💾 Datei laden
+                        </button>
+                    </div>
+                </div>
+
+                <!-- IMPORT-BEREICH (Rechts) -->
+                <div class="parchment-texture border-2 border-dragon-gold rounded-xl p-4 md:p-6 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <h2 class="font-cinzel text-xl font-black text-dragon-red border-b border-dragon-gold pb-2 mb-3 text-center">
+                            DATEN IMPORTIEREN
+                        </h2>
+                        <p class="text-xs text-dragon-charcoal/80 mb-4 text-center">
+                            Lade eine exportierte JSON-Sitzungsdatei hoch oder füge den JSON-Code direkt ein.
+                        </p>
+
+                        <!-- Option A: Datei Import -->
+                        <div class="mb-4 p-3 border border-dashed border-dragon-accent rounded-lg bg-white/30 text-center">
+                            <span class="block text-xs font-bold text-dragon-charcoal mb-2">Option A: JSON-Datei hochladen</span>
+                            <label class="inline-flex items-center justify-center px-4 py-2 bg-dragon-charcoal hover:bg-dragon-red text-parchment-light rounded font-cinzel text-xs font-bold cursor-pointer transition shadow">
+                                📁 Datei auswählen
+                                <input type="file" id="import-file-input" class="hidden" accept=".json" onchange="importFromFile(event)">
+                            </label>
+                            <span id="import-file-name" class="block text-[10px] text-dragon-charcoal/60 mt-1 italic">Keine Datei ausgewählt</span>
+                        </div>
+
+                        <!-- Option B: Textfeld Import -->
+                        <div class="flex flex-col gap-1.5">
+                            <span class="block text-xs font-bold text-dragon-charcoal">Option B: JSON-Code hier einfügen</span>
+                            <textarea id="import-textarea" class="w-full h-24 p-2 border border-dragon-accent bg-white/50 rounded font-mono text-xs focus:outline-none placeholder-dragon-accent" 
+                                placeholder='{ "sessionTitle": "Session X", "answers": { ... } }'></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Aktionsbutton für Textfeld Import -->
+                    <button onclick="importFromText()" class="w-full py-2.5 mt-4 bg-dragon-red hover:bg-dragon-redDark text-white rounded text-xs font-bold font-cinzel tracking-wider transition shadow">
+                        ⚡ JSON-Text importieren
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Gefahrzone / Daten löschen -->
+        <div class="text-center mt-2">
+            <button onclick="confirmReset()" class="text-[11px] text-red-400 hover:text-red-500 hover:underline transition">
+                ⚠️ Alle Daten dieser Session zurücksetzen
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dragon-charcoal border-t border-dragon-gold/30 text-parchment/60 py-6 text-center text-xs mt-8">
+        <div class="max-w-4xl mx-auto px-4 space-y-2">
+            <p class="font-cinzel text-dragon-gold font-bold">DM Session Prep Helper • Version 1.2.0</p>
+            <p>Konzipiert für reibungslose Kampagnenvorbereitung. Daten werden automatisch offline im Browser gesichert.</p>
+        </div>
+    </footer>
+
+    <!-- Custom Modal für Bestätigungen (Ersetzt unschöne native Alerts) -->
+    <div id="confirm-modal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden p-4">
+        <div class="parchment-texture border-4 border-dragon-red p-5 rounded-xl max-w-sm w-full text-center shadow-2xl">
+            <h3 class="font-cinzel text-lg md:text-xl font-bold text-dragon-red mb-2">Bist du sicher?</h3>
+            <p class="text-xs md:text-sm text-dragon-charcoal mb-6">Deine gesamten aktuellen Antworten für diese Session werden unwiderruflich gelöscht!</p>
+            <div class="grid grid-cols-2 gap-2">
+                <button onclick="resetSession()" class="py-2.5 bg-dragon-red text-white font-bold rounded hover:bg-dragon-redDark transition text-xs md:text-sm">
+                    Ja, löschen
+                </button>
+                <button onclick="closeModal()" class="py-2.5 bg-dragon-accent text-dragon-charcoal font-bold rounded hover:bg-dragon-gold/30 transition text-xs md:text-sm">
+                    Abbrechen
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logik -->
+    <script>
+        // Fragenkatalog direkt aus dem hochgeladenen Bild übertragen
+        const questionCatalog = [
+            // STORY
+            { id: "s1", category: "Story", text: "Wo endete die Geschichte beim letzten Mal?" },
+            { id: "s2", category: "Story", text: "Gibt es wichtige Handlungspunkte (Major Plot Points), die in dieser Sitzung auftreten könnten?" },
+            { id: "s3", category: "Story", text: "Gibt es kleinere Handlungspunkte (Minor Plot Points), die in dieser Sitzung auftreten könnten?" },
+            { id: "s4", category: "Story", text: "Erstelle einen kurzen Entwurf der Storyline für diese Sitzung." },
+            
+            // LOCATIONS
+            { id: "l1", category: "Locations", text: "Wo beginnen die Spieler diese Sitzung?" },
+            { id: "l2", category: "Locations", text: "Werden sie zu anderen Orten reisen?" },
+            { id: "l3", category: "Locations", text: "Ist es das erste Mal, dass sie diesen Ort sehen? Bereite eine Beschreibung vor und erstelle eine Liste der Dinge, die dort sind." },
+            { id: "l4", category: "Locations", text: "Waren sie schon einmal hier? Bereite eine Beschreibung vor, wie sich dieser Ort verändert hat." },
+            { id: "l5", category: "Locations", text: "Wirst du Karten verwenden? Sind diese vorbereitet?" },
+            
+            // CHARACTERS
+            { id: "c1", category: "Characters", text: "Welche NPCs werden die Spieler in dieser Sitzung wahrscheinlich treffen?" },
+            { id: "c2", category: "Characters", text: "Bereite jeden NPC mit ein paar leicht verständlichen Punkten zu Persönlichkeit, Aussehen, Absichten und Beruf vor." },
+            { id: "c3", category: "Characters", text: "Sind NPCs mit wichtigen Handlungspunkten verbunden? Welche lebenswichtigen Informationen könnten sie preisgeben?" },
+            { id: "c4", category: "Characters", text: "Bereite ein paar zufällige NPCs vor, die du bei Bedarf schnell hervorholen kannst." },
+            
+            // ENEMIES
+            { id: "e1", category: "Enemies", text: "Werden die Spieler in dieser Sitzung eine große Begegnung (Grand Encounter) haben?" },
+            { id: "e2", category: "Enemies", text: "Hast du alle Statblocks (Werteblöcke) und Beschreibungen vorbereitet?" },
+            { id: "e3", category: "Enemies", text: "Hast du ein paar dem Schwierigkeitsgrad angemessene Zufallsbegegnungen bereit?" },
+            
+            // TREASURE
+            { id: "t1", category: "Treasure", text: "Werden die Spieler in dieser Sitzung Beute erhalten, die die Geschichte vorantreibt?" },
+            { id: "t2", category: "Treasure", text: "Hast du Statblocks und Beschreibungen für alle magischen Gegenstände vorbereitet?" },
+            { id: "t3", category: "Treasure", text: "Hast du eine Tabelle für Zufallsbeute (Loot Table) vorbereitet?" },
+            
+            // RULE CHECK
+            { id: "r1", category: "Rule Check", text: "Gibt es Regeln, die du nachschlagen musst?" },
+            { id: "r2", category: "Rule Check", text: "Gab es unklare Regeln, die in der letzten Sitzung aufgetaucht sind?" },
+            { id: "r3", category: "Rule Check", text: "Gibt es Dinge, die du balancen musst (Hausregeln oder Homebrew)?" },
+            
+            // A REFRESHER
+            { id: "ref1", category: "Refresher", text: "Auffrischung: Lies kurz die Hintergrundgeschichten der Spielercharaktere (PCs). Füge zu jeder Hintergrundgeschichte ein paar Notizen hinzu, damit du nicht vergisst, sie mit der aktuellen Story zu verknüpfen." }
+        ];
+
+        // Anwendungsstatus (State)
+        let answers = {};
+        let activeQueue = []; // Liste der IDs in Bearbeitungsreihenfolge
+        let currentQueueIndex = 0;
+        let currentExportFormat = 'markdown'; // Behält das aktuell gewählte Exportformat im Blick
+
+        // Lokale Speicherdaten-Schlüssel
+        const STORAGE_KEY_ANSWERS = "dm_prep_answers";
+        const STORAGE_KEY_TITLE = "dm_prep_session_title";
+        const STORAGE_KEY_QUEUE = "dm_prep_active_queue";
+        const STORAGE_KEY_INDEX = "dm_prep_queue_index";
+
+        // Initialisierung beim Laden der Seite
+        window.onload = function() {
+            loadSavedData();
+            
+            // Falls keine Queue gespeichert war, erstelle sie neu
+            if (!activeQueue || activeQueue.length === 0) {
+                initializeDefaultQueue();
+            }
+
+            renderFocusQuestion();
+            renderOverview();
+            updateProgress();
+            
+            // PWA Standard Service Worker Registrierung
+            if ('serviceWorker' in navigator) {
+                const swCode = `
+                    self.addEventListener('install', e => {
+                        self.skipWaiting();
+                    });
+                    self.addEventListener('fetch', e => {
+                        e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+                    });
+                `;
+                const blob = new Blob([swCode], {type: 'application/javascript'});
+                const swUrl = URL.createObjectURL(blob);
+                navigator.serviceWorker.register(swUrl).catch(err => console.log('SW registration failed', err));
+            }
+        };
+
+        // Standardreihenfolge herstellen
+        function initializeDefaultQueue() {
+            activeQueue = questionCatalog.map(q => q.id);
+            currentQueueIndex = 0;
+            saveData();
+        }
+
+        // Lade gespeicherte Daten
+        function loadSavedData() {
+            try {
+                const savedAnswers = localStorage.getItem(STORAGE_KEY_ANSWERS);
+                if (savedAnswers) answers = JSON.parse(savedAnswers);
+
+                const savedTitle = localStorage.getItem(STORAGE_KEY_TITLE);
+                if (savedTitle) document.getElementById("session-title").value = savedTitle;
+
+                const savedQueue = localStorage.getItem(STORAGE_KEY_QUEUE);
+                if (savedQueue) activeQueue = JSON.parse(savedQueue);
+
+                const savedIndex = localStorage.getItem(STORAGE_KEY_INDEX);
+                if (savedIndex) currentQueueIndex = parseInt(savedIndex, 10);
+            } catch (e) {
+                console.error("Fehler beim Laden der lokalen Spieldaten", e);
+            }
+        }
+
+        // Daten persistent speichern
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY_ANSWERS, JSON.stringify(answers));
+            localStorage.setItem(STORAGE_KEY_TITLE, document.getElementById("session-title").value);
+            localStorage.setItem(STORAGE_KEY_QUEUE, JSON.stringify(activeQueue));
+            localStorage.setItem(STORAGE_KEY_INDEX, currentQueueIndex.toString());
+            updateProgress();
+        }
+
+        // Fortschrittsbalken und Text aktualisieren
+        function updateProgress() {
+            const total = questionCatalog.length;
+            const answeredCount = questionCatalog.filter(q => answers[q.id] && answers[q.id].trim().length > 0).length;
+            
+            document.getElementById("progress-text").textContent = `${answeredCount} / ${total} beantwortet`;
+            
+            const percent = total > 0 ? (answeredCount / total) * 100 : 0;
+            document.getElementById("progress-bar").style.width = `${percent}%`;
+        }
+
+        // Ansicht wechseln (Fokus, Übersicht, Export)
+        function switchView(viewName) {
+            document.getElementById("view-focus").classList.add("hidden");
+            document.getElementById("view-overview").classList.add("hidden");
+            document.getElementById("view-export").classList.add("hidden");
+
+            // Standard-Design für unselektierte Buttons im Pille-Stil
+            const baseClass = "px-2 py-2 text-xs md:text-sm rounded font-cinzel font-bold text-center transition text-parchment-dark/70 hover:text-white";
+            const activeClass = "px-2 py-2 text-xs md:text-sm rounded font-cinzel font-bold text-center transition bg-dragon-red text-white shadow-md";
+
+            document.getElementById("btn-view-focus").className = baseClass;
+            document.getElementById("btn-view-overview").className = baseClass;
+            document.getElementById("btn-view-export").className = baseClass;
+
+            if (viewName === 'focus') {
+                document.getElementById("view-focus").classList.remove("hidden");
+                document.getElementById("btn-view-focus").className = activeClass;
+                renderFocusQuestion();
+            } else if (viewName === 'overview') {
+                document.getElementById("view-overview").classList.remove("hidden");
+                document.getElementById("btn-view-overview").className = activeClass;
+                renderOverview();
+            } else if (viewName === 'export') {
+                document.getElementById("view-export").classList.remove("hidden");
+                document.getElementById("btn-view-export").className = activeClass;
+                generateExport(currentExportFormat); // Nutzt das zuvor eingestellte Format
+            }
+        }
+
+        // Fokus Frage rendern
+        function renderFocusQuestion() {
+            if (activeQueue.length === 0) {
+                initializeDefaultQueue();
+            }
+
+            // Sicherstellen, dass der Index im Rahmen liegt
+            if (currentQueueIndex >= activeQueue.length) {
+                currentQueueIndex = 0;
+            } else if (currentQueueIndex < 0) {
+                currentQueueIndex = activeQueue.length - 1;
+            }
+
+            const currentId = activeQueue[currentQueueIndex];
+            const questionObj = questionCatalog.find(q => q.id === currentId);
+
+            if (!questionObj) return;
+
+            // Deutsche Übersetzung für UI Kategorien
+            let displayCategory = questionObj.category;
+            if (displayCategory === "Story") displayCategory = "📖 Story";
+            else if (displayCategory === "Locations") displayCategory = "🏰 Orte";
+            else if (displayCategory === "Characters") displayCategory = "👥 Charaktere";
+            else if (displayCategory === "Enemies") displayCategory = "⚔️ Gegner";
+            else if (displayCategory === "Treasure") displayCategory = "💎 Schätze";
+            else if (displayCategory === "Rule Check") displayCategory = "📜 Regeln";
+            else if (displayCategory === "Refresher") displayCategory = "🧠 Auffrischung";
+
+            document.getElementById("focus-category-badge").textContent = displayCategory;
+            document.getElementById("focus-question-text").textContent = questionObj.text;
+            document.getElementById("focus-queue-index").textContent = `${currentQueueIndex + 1} / ${activeQueue.length}`;
+
+            // Antwortfeld füllen
+            const textInput = document.getElementById("focus-answer-input");
+            textInput.value = answers[currentId] || "";
+        }
+
+        // Antwort im Fokusmodus beim Tippen speichern
+        function saveCurrentFocusAnswer() {
+            const currentId = activeQueue[currentQueueIndex];
+            const textVal = document.getElementById("focus-answer-input").value;
+            answers[currentId] = textVal;
+            saveData();
+        }
+
+        // Nächste Frage
+        function nextQuestion() {
+            currentQueueIndex++;
+            if (currentQueueIndex >= activeQueue.length) {
+                currentQueueIndex = 0;
+            }
+            saveData();
+            renderFocusQuestion();
+        }
+
+        // Vorherige Frage
+        function prevQuestion() {
+            currentQueueIndex--;
+            if (currentQueueIndex < 0) {
+                currentQueueIndex = activeQueue.length - 1;
+            }
+            saveData();
+            renderFocusQuestion();
+        }
+
+        // Eine Frage nach hinten schieben
+        function postponeCurrentQuestion() {
+            if (activeQueue.length <= 1) {
+                return;
+            }
+
+            const currentId = activeQueue[currentQueueIndex];
+            
+            // Entferne an aktueller Position
+            activeQueue.splice(currentQueueIndex, 1);
+            
+            // Füge am Ende der Queue wieder an
+            activeQueue.push(currentId);
+            
+            // Den Index anpassen
+            if (currentQueueIndex >= activeQueue.length) {
+                currentQueueIndex = 0;
+            }
+
+            saveData();
+            renderFocusQuestion();
+        }
+
+        // Übersichts-Liste rendern
+        function renderOverview() {
+            const container = document.getElementById("overview-categories-container");
+            container.innerHTML = "";
+
+            // Gruppiere Fragen nach Kategorien
+            const categories = ["Story", "Locations", "Characters", "Enemies", "Treasure", "Rule Check", "Refresher"];
+            const catTranslations = {
+                "Story": "📖 Story",
+                "Locations": "🏰 Orte / Locations",
+                "Characters": "👥 Charaktere / NPCs",
+                "Enemies": "⚔️ Gegner / Begegnungen",
+                "Treasure": "💎 Schätze / Belohnung",
+                "Rule Check": "📜 Regelüberprüfung",
+                "Refresher": "🧠 Auffrischung"
+            };
+
+            categories.forEach(cat => {
+                const catQuestions = questionCatalog.filter(q => q.category === cat);
+                
+                const catSection = document.createElement("div");
+                catSection.className = "border-b border-dragon-accent/50 pb-4 last:border-0";
+
+                const title = document.createElement("h3");
+                title.className = "font-cinzel font-bold text-base md:text-lg text-dragon-red mb-3";
+                title.textContent = catTranslations[cat] || cat;
+                catSection.appendChild(title);
+
+                const listContainer = document.createElement("div");
+                listContainer.className = "space-y-3";
+
+                catQuestions.forEach((q, idx) => {
+                    const hasAnswer = answers[q.id] && answers[q.id].trim().length > 0;
+                    
+                    const itemDiv = document.createElement("div");
+                    itemDiv.className = `p-3 rounded-lg border ${hasAnswer ? 'border-green-300 bg-green-50/50' : 'border-dragon-accent/20 bg-white/30'} transition`;
+
+                    const labelDiv = document.createElement("div");
+                    labelDiv.className = "flex justify-between items-start gap-2 mb-1.5";
+
+                    const qText = document.createElement("span");
+                    qText.className = "text-xs md:text-sm font-semibold text-dragon-charcoal/90";
+                    qText.textContent = `${idx + 1}. ${q.text}`;
+                    labelDiv.appendChild(qText);
+
+                    // Badge für Status
+                    const statusBadge = document.createElement("span");
+                    statusBadge.className = `text-[8px] md:text-[10px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded flex-shrink-0 ${hasAnswer ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800'}`;
+                    statusBadge.textContent = hasAnswer ? "Ausgefüllt" : "Offen";
+                    labelDiv.appendChild(statusBadge);
+
+                    itemDiv.appendChild(labelDiv);
+
+                    // Direktes Bearbeitungsfeld in der Übersicht
+                    const inlineArea = document.createElement("textarea");
+                    inlineArea.className = "w-full p-2 text-xs md:text-sm border border-dragon-accent/40 rounded bg-white/70 focus:bg-white focus:outline-none focus:border-dragon-red transition";
+                    inlineArea.rows = 2;
+                    inlineArea.placeholder = "Antwort verfassen...";
+                    inlineArea.value = answers[q.id] || "";
+                    inlineArea.oninput = function() {
+                        answers[q.id] = this.value;
+                        if (this.value.trim().length > 0) {
+                            statusBadge.className = "text-[8px] md:text-[10px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded flex-shrink-0 bg-green-100 text-green-800";
+                            statusBadge.textContent = "Ausgefüllt";
+                            itemDiv.className = "p-3 rounded-lg border border-green-300 bg-green-50/50 transition";
+                        } else {
+                            statusBadge.className = "text-[8px] md:text-[10px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded flex-shrink-0 bg-orange-100 text-orange-800";
+                            statusBadge.textContent = "Offen";
+                            itemDiv.className = "p-3 rounded-lg border border-dragon-accent/20 bg-white/30 transition";
+                        }
+                        saveData();
+                    };
+
+                    itemDiv.appendChild(inlineArea);
+                    listContainer.appendChild(itemDiv);
+                });
+
+                catSection.appendChild(listContainer);
+                container.appendChild(catSection);
+            });
+        }
+
+        // Export Generierung und UI-Highlighting für die Formate
+        function generateExport(format) {
+            currentExportFormat = format;
+            const sessionTitle = document.getElementById("session-title").value || "D&D Session";
+            let out = "";
+
+            // Design der Format-Buttons anpassen
+            const activeBtnClass = "px-2 py-2 bg-dragon-red text-white rounded font-cinzel font-bold transition text-xs text-center shadow";
+            const inactiveBtnClass = "px-2 py-2 bg-dragon-accent text-dragon-charcoal rounded font-cinzel font-bold transition text-xs text-center shadow hover:bg-dragon-gold/20";
+            
+            document.getElementById("btn-export-markdown").className = (format === 'markdown') ? activeBtnClass : inactiveBtnClass;
+            document.getElementById("btn-export-plain").className = (format === 'plain') ? activeBtnClass : inactiveBtnClass;
+            document.getElementById("btn-export-json").className = (format === 'json') ? activeBtnClass : inactiveBtnClass;
+
+            if (format === 'markdown') {
+                out += `# DM Session Prep: ${sessionTitle}\n`;
+                out += `*Generiert am ${new Date().toLocaleDateString('de-DE')}*\n\n`;
+
+                let currentCat = "";
+                questionCatalog.forEach(q => {
+                    if (q.category !== currentCat) {
+                        currentCat = q.category;
+                        out += `\n## ${currentCat.toUpperCase()}\n\n`;
+                    }
+                    out += `### ${q.text}\n`;
+                    out += `${answers[q.id] || "_Noch nicht beantwortet_"}\n\n`;
+                });
+            } else if (format === 'plain') {
+                out += `DM SESSION PREP: ${sessionTitle}\n`;
+                out += `Datum: ${new Date().toLocaleDateString('de-DE')}\n`;
+                out += `==================================================\n\n`;
+
+                let currentCat = "";
+                questionCatalog.forEach(q => {
+                    if (q.category !== currentCat) {
+                        currentCat = q.category;
+                        out += `\n[ ${currentCat.toUpperCase()} ]\n`;
+                        out += `--------------------------------------------------\n`;
+                    }
+                    out += `F: ${q.text}\n`;
+                    out += `A: ${answers[q.id] || "Keine Angabe"}\n\n`;
+                });
+            } else if (format === 'json') {
+                // Strukturiertes JSON mit Meta-Informationen für perfekten Re-Import
+                const exportObj = {
+                    appName: "DM Session Prep Helper",
+                    version: "1.2.0",
+                    exportDate: new Date().toISOString(),
+                    sessionTitle: sessionTitle,
+                    activeQueue: activeQueue,
+                    answers: answers
+                };
+                out = JSON.stringify(exportObj, null, 2);
+            }
+
+            document.getElementById("export-textarea").value = out;
+        }
+
+        // Automatische Download-Funktion für die generierte Datei
+        function downloadExportFile() {
+            const content = document.getElementById("export-textarea").value;
+            const sessionTitle = document.getElementById("session-title").value || "dnd_session";
+            const sanitizedTitle = sessionTitle.toLowerCase().replace(/[^a-z0-9]/g, "_");
+            
+            let filename = `${sanitizedTitle}_prep`;
+            let mimeType = "text/plain";
+
+            if (currentExportFormat === 'markdown') {
+                filename += ".md";
+                mimeType = "text/markdown";
+            } else if (currentExportFormat === 'plain') {
+                filename += ".txt";
+                mimeType = "text/plain";
+            } else if (currentExportFormat === 'json') {
+                filename += ".json";
+                mimeType = "application/json";
+            }
+
+            const blob = new Blob([content], { type: `${mimeType};charset=utf-8` });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", filename);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification("Datei erfolgreich generiert und heruntergeladen!", "success");
+        }
+
+        // Clipboard kopieren
+        function copyToClipboard() {
+            const textarea = document.getElementById("export-textarea");
+            textarea.select();
+            
+            try {
+                document.execCommand('copy');
+                showNotification("Inhalt erfolgreich in die Zwischenablage kopiert!", "success");
+            } catch (err) {
+                console.error("Kopieren fehlgeschlagen", err);
+                showNotification("Fehler beim Kopieren. Bitte manuell auswählen.", "error");
+            }
+        }
+
+        // Custom Notification Banner anzeigen
+        function showNotification(message, type) {
+            const banner = document.getElementById("notification-banner");
+            banner.textContent = message;
+            banner.classList.remove("hidden");
+
+            if (type === "success") {
+                banner.className = "p-3 rounded-lg text-center font-bold text-sm shadow-md bg-green-100 text-green-800 border border-green-300";
+            } else if (type === "error") {
+                banner.className = "p-3 rounded-lg text-center font-bold text-sm shadow-md bg-red-100 text-red-800 border border-red-300";
+            }
+
+            setTimeout(() => {
+                banner.classList.add("hidden");
+            }, 4000);
+        }
+
+        // Universeller JSON-Daten-Importeur
+        function processImportData(dataObj) {
+            try {
+                // Grundlegende Validierung
+                if (!dataObj || typeof dataObj !== 'object') {
+                    throw new Error("Ungültiges JSON-Objekt");
+                }
+
+                if (!dataObj.answers || typeof dataObj.answers !== 'object') {
+                    throw new Error("Dieses Dokument enthält keine gültigen Antwortstrukturen.");
+                }
+
+                // Daten in den App-State überführen
+                answers = dataObj.answers;
+
+                if (dataObj.sessionTitle && typeof dataObj.sessionTitle === 'string') {
+                    document.getElementById("session-title").value = dataObj.sessionTitle;
+                }
+
+                if (dataObj.activeQueue && Array.isArray(dataObj.activeQueue)) {
+                    // Überprüfen, ob alle IDs in der geladenen Queue valide im Katalog existieren
+                    const validIds = dataObj.activeQueue.filter(id => questionCatalog.some(q => q.id === id));
+                    if (validIds.length > 0) {
+                        activeQueue = validIds;
+                    } else {
+                        initializeDefaultQueue();
+                    }
+                } else {
+                    initializeDefaultQueue();
+                }
+
+                currentQueueIndex = 0; // Nach Import wieder an den Anfang setzen
+
+                // Speichern und alle Ansichten neu zeichnen
+                saveData();
+                renderFocusQuestion();
+                renderOverview();
+                updateProgress();
+
+                showNotification("Sitzungsdaten erfolgreich importiert!", "success");
+                return true;
+            } catch (e) {
+                showNotification(`Import fehlgeschlagen: ${e.message}`, "error");
+                return false;
+            }
+        }
+
+        // Import aus einer hochgeladenen Datei (Option A)
+        function importFromFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            document.getElementById("import-file-name").textContent = file.name;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const jsonContent = JSON.parse(e.target.result);
+                    const success = processImportData(jsonContent);
+                    if (success) {
+                        // Input nach erfolgreichem Einlesen leeren
+                        event.target.value = '';
+                    }
+                } catch (err) {
+                    showNotification("Die Datei enthält kein gültiges JSON-Format.", "error");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Import aus dem manuellen Textfeld (Option B)
+        function importFromText() {
+            const rawText = document.getElementById("import-textarea").value.trim();
+            if (!rawText) {
+                showNotification("Bitte füge zuerst JSON-Code in das Textfeld ein.", "error");
+                return;
+            }
+
+            try {
+                const parsedData = JSON.parse(rawText);
+                const success = processImportData(parsedData);
+                if (success) {
+                    // Eingabefeld nach Erfolg leeren
+                    document.getElementById("import-textarea").value = "";
+                }
+            } catch (err) {
+                showNotification("Der eingegebene Text ist kein gültiges JSON.", "error");
+            }
+        }
+
+        // Modal Bestätigung für Reset
+        function confirmReset() {
+            document.getElementById("confirm-modal").classList.remove("hidden");
+        }
+
+        function closeModal() {
+            document.getElementById("confirm-modal").classList.add("hidden");
+        }
+
+        // Session komplett zurücksetzen
+        function resetSession() {
+            answers = {};
+            document.getElementById("session-title").value = "Meine epische Session 1";
+            initializeDefaultQueue();
+            saveData();
+            closeModal();
+            renderFocusQuestion();
+            renderOverview();
+            updateProgress();
+            showNotification("Sitzung wurde vollständig zurückgesetzt.", "success");
+        }
+    </script>
+</body>
+</html>
+<!-- 
+CHANGE LOG
+v1.2.0:
+- JSON Export/Import-Schnittstelle hinzugefügt.
+- Unterstützung für den direkten Dateidownload (.md, .txt, .json) über virtuellen Link.
+- Implementierung eines sicheren, validierenden JSON-Imports über:
+  - Option A: Drag/Dateiauswahl-Uploader (.json)
+  - Option B: Textfeld-Uploader für manuelles Einfügen
+- Einführung eines dedizierten Status-Notification-Banners im D&D Design anstelle nativer Alerts.
+- Umbenennung des dritten Navigations-Tabs zu "Export/Import".
+v1.1.0:
+- Optimierung für mobile Bildschirmgrößen (Smartphones / Touchscreens).
+- Konvertierung des Navigations-Menüs zu einer kompakten Segmented Tab Bar.
+- Überarbeitung der Aktionsbuttons im Fokus-Modus in ein flexibles CSS-Raster für bequeme Daumenerreichbarkeit.
+- Dekorative Elemente bei extrem kleinen Breiten ausgeblendet, um den Bearbeitungsbereich zu maximieren.
+- Skalierung von Überschriften, Frage-Texten und Formularen via Tailwind-Klassen angepasst.
+v1.0.0:
+- Initiale Entwicklung der DM Session Prep Web-App.
+- D&D-thematisiertes Pergament-Design mit reibungsloser mobiler Nutzbarkeit (Responsive Web Design).
+- "Fokus-Modus" integriert, um Fragen konzentriert nacheinander zu bearbeiten.
+- "Später beantworten (Nach hinten stellen)" verschiebt Fragen dynamisch ans Ende der Warteschlange.
+- "Übersichts-Modus" mit direkter Inline-Bearbeitungsmöglichkeit implementiert.
+- "Export-Modus" für formatierten Markdown- und Plaintext-Export hinzugefügt.
+- Persistierung der Session über LocalStorage, um versehentlichen Datenverlust zu vermeiden.
+- Vollständige PWA-Konformität mit Manifest und Service Worker.
+-->
