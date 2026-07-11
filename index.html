@@ -215,7 +215,24 @@
     #timeline{padding:10px 12px;}
     #topbar{padding:10px 12px;}
   }
+  <!-- Service Worker Registration -->
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/ScenarioLog/sw.js')
+      .then(reg => console.log('Service Worker registered:', reg))
+      .catch(err => console.log('Service Worker registration failed:', err));
+  }
+</script>
 </style>
+  <!-- PWA Manifest -->
+<link rel="manifest" href="/ScenarioLog/manifest.json">
+<meta name="theme-color" content="#030712">
+<meta name="description" content="Eine professionelle Anwendung zur Verwaltung und Präsentation von Spielszenarien">
+
+<!-- iOS Support -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ScenarioLog">
 </head>
 <body>
 <div id="app">
