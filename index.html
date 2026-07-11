@@ -1,890 +1,1429 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DM Session Prep Helper</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts für fantastischen D&D Look und hohe Lesbarkeit -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- PWA Manifest Integration -->
-    <link rel="manifest" href="data:application/manifest+json;base64,ewogICJuYW1lIjogIkRNIFNlc3Npb24gUHJlcCBIZWxwZXIiLAogICJzaG9ydF9uYW1lIjogIkRNIFByZXAiLAogICJzdGFydF91cmwiOiAiLiIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiI2Y0ZWZkYyIsCiAgInRoZW1lX2NvbG9yIjogIiM3YTFjMWMiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWwsPHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJz48Y2lyY2xlIGN4PScyNTYnIGN5PScyNTYnIHI9JzI0MCcgZmlsbD0nIzdhMWMxYycvPjx0ZXh0IHgpxzUwJScgeT0nNjAlJyBmb250LXNpemU9JzI0MCcgZmlsbD0nI2Y0ZWZkYycgZm9udC1mYW1pbHk9J0NpbnplbCcgdGV4dC1hbmNob3I9J21pZGRsZSc+RE08L3RleHQ+PC9zdmc+IiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIiwKICAgICAgInB1cnBvc2UiOiAiYW55IG1hc2thYmxlIgogICAgfQogIF0KfQ==">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Project LoadLine</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a0e13">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LoadLine">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<style>
+  :root{
+    --bg:#0a0e13; --panel:#11161e; --panel-2:#151b25; --border:#212a37;
+    --text:#e7ebf1; --text-dim:#8a95a8; --text-dimmer:#586170;
+    --teal:#2dd4bf; --amber:#f5a524; --red:#ef4444; --gold:#d4af37; --client:#6b8bd6;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;overflow:hidden;}
+  h1,h2,h3,summary{font-family:'Space Grotesk',system-ui,sans-serif;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  button{font-family:inherit;}
 
-    <script>
-        // Tailwind Konfiguration für D&D-Thema
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        parchment: {
-                            light: '#fdfbf7',
-                            DEFAULT: '#f5f0e6',
-                            dark: '#eadeca',
-                            accent: '#dfd2b9'
-                        },
-                        dragon: {
-                            gold: '#b8860b',
-                            red: '#7a1c1c',
-                            redDark: '#561010',
-                            charcoal: '#2c221e'
-                        }
-                    },
-                    fontFamily: {
-                        cinzel: ['Cinzel', 'serif'],
-                        sans: ['Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        /* Spezifische Styling-Anpassungen */
-        body {
-            background-color: #1a1412;
-            background-image: radial-gradient(#2c1f1b 1px, transparent 1px);
-            background-size: 24px 24px;
-        }
-        .parchment-texture {
-            background-color: #f5f0e6;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='100' height='100' fill='%23f5f0e6'/%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
-        }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #2c221e;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #7a1c1c;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #b8860b;
-        }
-    </style>
+  #app{display:flex;height:100vh;width:100vw;}
+
+  /* ---------- sidebar ---------- */
+  #sidebar{width:280px;flex:0 0 280px;background:var(--panel);border-right:1px solid var(--border);overflow-y:auto;padding:18px 16px 40px;}
+  #sidebar h1{font-size:17px;margin:0 0 2px;letter-spacing:.2px;}
+  #sidebar .tagline{color:var(--text-dim);font-size:12px;margin:0 0 18px;line-height:1.4;}
+  .panel-close{display:none;}
+
+  details{border:1px solid var(--border);border-radius:10px;margin-bottom:10px;background:var(--panel-2);overflow:hidden;}
+  summary{padding:11px 12px;cursor:pointer;font-size:13px;font-weight:600;list-style:none;display:flex;align-items:center;gap:8px;user-select:none;min-height:20px;}
+  summary::-webkit-details-marker{display:none;}
+  summary::before{content:"+";color:var(--teal);font-family:'JetBrains Mono',monospace;font-weight:600;width:12px;}
+  details[open] summary::before{content:"–";}
+  details form{padding:0 12px 12px;display:flex;flex-direction:column;gap:8px;}
+
+  label{font-size:11px;color:var(--text-dim);display:flex;flex-direction:column;gap:4px;}
+  input[type=text],input[type=number],select{
+    background:#0d1218;border:1px solid var(--border);color:var(--text);border-radius:6px;
+    padding:9px 8px;font-size:13px;font-family:inherit;width:100%;min-height:36px;
+  }
+  input:focus,select:focus{outline:none;border-color:var(--teal);}
+  .checkrow{flex-direction:row;align-items:center;gap:6px;font-size:12px;color:var(--text);}
+  .checkrow input{width:auto;min-height:auto;}
+  .row2{display:flex;gap:8px;}
+  .row2 label{flex:1;}
+  button.primary{margin-top:2px;background:var(--teal);color:#05201c;border:none;border-radius:6px;padding:10px 10px;font-weight:600;font-size:12.5px;cursor:pointer;min-height:38px;}
+  button.primary:hover{background:#4ee0cb;}
+  button.ghost{background:transparent;border:1px solid var(--border);color:var(--text-dim);border-radius:6px;padding:7px 10px;font-size:12px;cursor:pointer;min-height:34px;}
+  button.ghost:hover{border-color:var(--red);color:var(--red);}
+  .abslist{display:flex;flex-direction:column;gap:6px;margin-top:2px;}
+  .absitem{display:flex;justify-content:space-between;align-items:center;background:var(--panel-2);border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:11.5px;color:var(--text-dim);}
+  .absitem button{background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;line-height:1;padding:2px 4px;}
+
+  /* ---------- main / graph ---------- */
+  #main{flex:1;display:flex;flex-direction:column;min-width:0;}
+  #topbar{padding:10px 20px;padding-top:calc(10px + env(safe-area-inset-top));border-bottom:1px solid var(--border);background:var(--panel);display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+  .iconbtn{display:none;background:var(--panel-2);border:1px solid var(--border);color:var(--text);border-radius:7px;padding:8px 10px;font-size:12.5px;cursor:pointer;min-height:36px;}
+  #stats{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--text-dim);}
+  #stats b{color:var(--text);font-family:'JetBrains Mono',monospace;font-weight:600;}
+  #legend{display:flex;align-items:center;gap:8px;margin-left:auto;font-size:11px;color:var(--text-dimmer);}
+  #legend .bar{width:110px;height:8px;border-radius:4px;background:linear-gradient(90deg,#1b3a3a,#2dd4bf 40%,#f5a524 70%,#ef4444 100%);}
+  #modeToggle{margin-left:auto;background:var(--panel-2);border:1px solid var(--border);color:var(--text);border-radius:7px;padding:8px 12px;font-size:12.5px;cursor:pointer;font-weight:600;min-height:36px;}
+  #modeToggle.active{background:var(--teal);color:#05201c;border-color:var(--teal);}
+  .iconbtn-visible{background:var(--panel-2);border:1px solid var(--border);color:var(--text);border-radius:7px;padding:8px 12px;font-size:12.5px;cursor:pointer;min-height:36px;}
+  .iconbtn-visible:disabled{opacity:.35;cursor:default;}
+  body.manager-mode #sortBtn, body.manager-mode #undoBtn, body.manager-mode #employeeToggle{display:none;}
+  body.manager-mode #legend{display:none;}
+  body.employee-mode #sortBtn, body.employee-mode #undoBtn, body.employee-mode #modeToggle{display:none;}
+  body.employee-mode #legend{display:none;}
+  .iconbtn-visible.active{background:var(--teal);color:#05201c;border-color:var(--teal);}
+
+  #graphwrap{flex:1;position:relative;overflow:hidden;}
+  svg{width:100%;height:100%;display:block;cursor:grab;touch-action:none;}
+  svg:active{cursor:grabbing;}
+
+  .bandline{stroke:#1c2430;stroke-width:1;}
+  .bandlabel{fill:#3a4553;font-size:10.5px;font-family:'JetBrains Mono',monospace;letter-spacing:.6px;text-transform:uppercase;pointer-events:none;}
+
+  .link{stroke:#3a4553;stroke-opacity:.45;transition:opacity .25s ease;}
+  .link-lead{stroke:var(--gold);stroke-dasharray:5 4;stroke-opacity:.6;}
+  .link-client{stroke:var(--client);stroke-opacity:.35;stroke-dasharray:2 3;}
+  .link.dim{opacity:.08;}
+
+  .node{transition:opacity .25s ease;}
+  .node.dim{opacity:.15;}
+  .node-label{fill:var(--text);font-size:11px;font-family:'Inter',sans-serif;pointer-events:none;text-anchor:middle;}
+  .node-sub{fill:var(--text-dimmer);font-size:9.5px;font-family:'JetBrains Mono',monospace;pointer-events:none;text-anchor:middle;opacity:0;transition:opacity .2s ease;}
+  .node.show-sub .node-sub{opacity:1;}
+  .hit{fill:transparent;pointer-events:all;}
+
+  .shape{cursor:pointer;stroke-width:2px;pointer-events:none;transition:fill .3s ease, fill-opacity .3s ease, stroke .3s ease, stroke-width .2s ease;}
+  .shape.selected{stroke:#fff !important;stroke-width:3px !important;}
+  .shape.out{opacity:.35;}
+  .node-icon{color:#fff;opacity:1;pointer-events:none;transition:opacity .3s ease;filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.7));}
+
+  /* ---------- detail panel ---------- */
+  #detail{width:300px;flex:0 0 300px;background:var(--panel);border-left:1px solid var(--border);padding:18px 16px;overflow-y:auto;
+    transition:flex-basis .22s ease, width .22s ease, opacity .18s ease, padding .22s ease;}
+  #detail.collapsed{width:0;flex:0 0 0;padding-left:0;padding-right:0;border-left:none;opacity:0;overflow:hidden;}
+  body.employee-mode #detail{display:none;}
+  #detail h2{font-size:14px;margin:0 0 2px;}
+  #detail .kind{font-size:10.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--text-dimmer);margin-bottom:14px;}
+  #detail .empty{color:var(--text-dimmer);font-size:12.5px;margin-top:40px;text-align:center;line-height:1.6;}
+  #detail .field{margin-bottom:12px;}
+  #detail .assignlist{display:flex;flex-direction:column;gap:6px;max-height:220px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;padding:8px;background:var(--panel-2);}
+  #detail .assignlist label{flex-direction:row;align-items:center;gap:7px;color:var(--text);font-size:12.5px;}
+  .assign-row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+  .assign-row label.assign-check{flex:1 1 140px;display:flex;align-items:center;gap:7px;min-width:0;color:var(--text);font-size:12.5px;}
+  .assign-row .assignee-name{overflow-wrap:anywhere;}
+  .weight-input{width:52px;min-height:26px;padding:3px 5px;font-size:11px;flex:0 0 auto;}
+  .info-dot{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;
+    background:var(--panel-2);border:1px solid var(--border);color:var(--text-dimmer);font-size:10px;
+    font-family:'JetBrains Mono',monospace;cursor:help;position:relative;flex:0 0 auto;vertical-align:middle;}
+  .lbltext{display:inline-flex;align-items:center;gap:5px;}
+  .info-dot:hover, .info-dot:focus{color:var(--teal);border-color:var(--teal);outline:none;}
+  .info-dot .tip{position:absolute;bottom:130%;left:0;background:#0d1218;border:1px solid var(--border);color:var(--text);
+    font-size:11px;font-family:'Inter',sans-serif;font-weight:400;padding:8px 10px;border-radius:7px;width:200px;
+    line-height:1.4;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .15s ease;z-index:70;text-align:left;
+    box-shadow:0 6px 20px rgba(0,0,0,.5);}
+  .info-dot:hover .tip, .info-dot:focus .tip{opacity:1;visibility:visible;}
+  #detail .breakdown{list-style:none;padding:0;margin:6px 0 0;font-size:12px;color:var(--text-dim);display:flex;flex-direction:column;gap:4px;}
+  #detail .breakdown li{display:flex;justify-content:space-between;border-bottom:1px dashed var(--border);padding-bottom:3px;}
+  #detail .totalload{font-size:22px;font-weight:600;font-family:'JetBrains Mono',monospace;margin:6px 0;}
+  #detail .delete-row{margin-top:16px;}
+  #detail .hint{font-size:11px;color:var(--text-dimmer);margin-top:4px;line-height:1.4;}
+  #detail .flag{display:inline-block;font-size:10.5px;padding:3px 7px;border-radius:5px;margin:2px 4px 0 0;}
+  #detail .flag.out{background:#3a2020;color:#ff9d9d;}
+
+  /* ---------- timeline ---------- */
+  #timeline{border-top:1px solid var(--border);background:var(--panel);padding:10px 20px;padding-bottom:calc(10px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  #timeline .daylabel{font-family:'JetBrains Mono',monospace;font-size:13px;min-width:78px;}
+  #playbtn{background:var(--panel-2);border:1px solid var(--border);color:var(--teal);border-radius:50%;width:38px;height:38px;font-size:14px;cursor:pointer;flex:0 0 auto;}
+  #timeline input[type=range]{flex:1;min-width:120px;accent-color:var(--teal);}
+  #timeline .totaldays{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-dim);}
+  #timeline .totaldays input{width:56px;min-height:30px;padding:5px;}
+  #activeOut{font-size:11.5px;color:var(--red);}
+
+  /* ---------- manager mode ---------- */
+  #managerView{display:none;flex:1;overflow-y:auto;padding:20px;}
+  body.manager-mode #graphwrap{display:none;}
+  body.manager-mode #managerView{display:block;}
+  body.manager-mode #sidebar{display:none;}
+
+  #employeeView{display:none;flex:1;overflow-y:auto;padding:20px;}
+  body.employee-mode #graphwrap{display:none;}
+  body.employee-mode #employeeView{display:block;}
+  body.employee-mode #sidebar{display:none;}
+  .emp-picker{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;}
+  .emp-picker label{display:flex;align-items:center;gap:6px;background:var(--panel-2);border:1px solid var(--border);border-radius:20px;padding:7px 13px;font-size:12.5px;cursor:pointer;}
+  .emp-picker input{width:auto;min-height:auto;}
+  .emp-card{background:var(--panel-2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;}
+  .emp-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;gap:8px;}
+  .emp-card-head h3{margin:0;font-size:14.5px;}
+  .emp-out-flag{background:#3a2020;color:#ff9d9d;font-size:10.5px;padding:3px 7px;border-radius:5px;flex:0 0 auto;}
+  .emp-bar-track{background:#0d1218;border-radius:6px;height:10px;overflow:hidden;margin-bottom:5px;}
+  .emp-bar-fill{height:100%;border-radius:6px;transition:width .3s ease, background .3s ease;}
+  .emp-pct{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-dim);margin-bottom:8px;}
+  .mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;}
+  .mcard{background:var(--panel-2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;cursor:pointer;}
+  .mcard-head{display:flex;align-items:center;gap:9px;}
+  .mcard .dot{width:11px;height:11px;border-radius:50%;flex:0 0 auto;background:var(--text-dimmer);}
+  .mcard h3{margin:0;font-size:14.5px;}
+  .mcard-meta{font-size:11.5px;color:var(--text-dimmer);margin:6px 0 0;}
+  .mcard-ok{margin-top:10px;font-size:11.5px;color:var(--text-dim);}
+  .mcard-issues{list-style:none;margin:10px 0 0;padding:0;font-size:12px;color:var(--text);display:flex;flex-direction:column;gap:5px;}
+  .mcard-issues li{padding-left:14px;position:relative;}
+  .mcard-issues li::before{content:"•";position:absolute;left:0;}
+  .mcard.level-error{border-color:var(--red);background:#1c1013;} .mcard.level-error .dot{background:var(--red);}
+  .mgrid-empty{color:var(--text-dimmer);font-size:13px;text-align:center;margin-top:60px;}
+  .mcard-status{margin-top:10px;font-size:12.5px;font-weight:600;color:var(--red);}
+  .mcard-involved{margin-top:4px;font-size:12px;color:var(--text-dim);}
+
+  .logentry{border-bottom:1px solid var(--border);padding:8px 0;}
+  .logentry:last-child{border-bottom:none;}
+  .logentry .day{font-family:'JetBrains Mono',monospace;font-size:11px;}
+  .logentry.error .day{color:var(--red);}
+  .logentry.ok .day{color:var(--text-dimmer);}
+  .logentry .detail{font-size:12px;color:var(--text);margin-top:2px;}
+  .logentry.ok .detail{color:var(--text-dimmer);}
+
+  /* ---------- context menu ---------- */
+  .ctxmenu{position:fixed;z-index:80;background:var(--panel-2);border:1px solid var(--border);border-radius:9px;
+    padding:6px;display:none;flex-direction:column;gap:2px;box-shadow:0 8px 24px rgba(0,0,0,.5);min-width:170px;}
+  .ctxmenu button{background:none;border:none;color:var(--text);text-align:left;padding:9px 10px;border-radius:6px;
+    font-size:13px;cursor:pointer;}
+  .ctxmenu button:hover{background:#1c2430;color:var(--teal);}
+
+  ::-webkit-scrollbar{width:8px;height:8px;}
+  ::-webkit-scrollbar-thumb{background:#263140;border-radius:4px;}
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 900px){
+    .iconbtn{display:inline-flex;align-items:center;gap:6px;}
+    #sidebar,#detail{
+      position:fixed;top:0;bottom:0;z-index:40;width:86vw;max-width:340px;
+      transition:transform .22s ease;box-shadow:0 0 40px rgba(0,0,0,.5);
+    }
+    #sidebar{left:0;transform:translateX(-105%);}
+    #sidebar.open{transform:translateX(0);}
+    #detail{right:0;transform:translateX(105%);}
+    #detail.open{transform:translateX(0);}
+    #detail.collapsed{width:86vw;flex:none;opacity:1;padding:18px 16px;border-left:1px solid var(--border);}
+    .panel-close{display:inline-flex;align-items:center;justify-content:center;background:var(--panel-2);border:1px solid var(--border);color:var(--text);border-radius:7px;width:34px;height:34px;cursor:pointer;float:right;margin-bottom:8px;}
+    #stats{font-size:11.5px;gap:12px;}
+    #legend{display:none;}
+    #timeline{padding:10px 12px;}
+    #topbar{padding:10px 12px;}
+  }
+</style>
 </head>
-<body class="font-sans text-dragon-charcoal min-h-screen flex flex-col antialiased">
+<body>
+<div id="app">
 
-    <!-- Header -->
-    <header class="border-b-4 border-dragon-gold bg-dragon-charcoal text-parchment py-4 md:py-6 px-4 shadow-xl relative z-10">
-        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div class="text-center sm:text-left">
-                <p class="text-[10px] md:text-xs uppercase tracking-widest text-dragon-gold font-bold">Spielleiter Werkzeug</p>
-                <h1 class="font-cinzel text-2xl md:text-4xl font-black tracking-wide text-parchment-light">DM SESSION PREP</h1>
-            </div>
-            <!-- Session Title -->
-            <div class="flex items-center w-full sm:w-auto">
-                <input type="text" id="session-title" value="Meine epische Session 1" 
-                    class="bg-dragon-redDark text-parchment font-cinzel font-bold border border-dragon-gold rounded px-3 py-2 sm:py-1.5 focus:outline-none focus:ring-2 focus:ring-dragon-gold w-full sm:w-64 text-center sm:text-left shadow-inner text-sm md:text-base"
-                    placeholder="Sitzungstitel..." oninput="saveData()">
-            </div>
+  <aside id="sidebar">
+    <button class="panel-close" id="closeSidebar">✕</button>
+    <h1>Belastungskarte</h1>
+    <p class="tagline">Zeigt, wer wie viel trägt — und was passiert, wenn jemand ausfällt.</p>
+
+    <details open>
+      <summary>Person</summary>
+      <form id="form-person">
+        <label><span class="lbltext">Name <span class="info-dot" tabindex="0">i<span class="tip">Der Name der Person, wird überall in der App angezeigt.</span></span></span><input type="text" name="name" required></label>
+        <label><span class="lbltext">Kapazität <span class="info-dot" tabindex="0">i<span class="tip">Wie viel Last diese Person insgesamt tragen kann, bevor sie über 100% liegt. Frei wählbare Einheit, muss nur zu deinen Projekt-/Aufgaben-Lastwerten passen.</span></span></span><input type="number" name="capacity" value="10" min="1"></label>
+        <button class="primary" type="submit">+ Person hinzufügen</button>
+      </form>
+    </details>
+
+    <details>
+      <summary>Kunde</summary>
+      <form id="form-client">
+        <label><span class="lbltext">Name <span class="info-dot" tabindex="0">i<span class="tip">Name des Kunden. Wird bei Projekten verknüpft, hat aber keinen Einfluss auf die Auslastung.</span></span></span><input type="text" name="name" required></label>
+        <button class="primary" type="submit">+ Kunde hinzufügen</button>
+      </form>
+    </details>
+
+    <details>
+      <summary>Geplantes Projekt</summary>
+      <form id="form-project">
+        <label><span class="lbltext">Name <span class="info-dot" tabindex="0">i<span class="tip">Der Name des Projekts.</span></span></span><input type="text" name="name" required></label>
+        <label><span class="lbltext">Last (1–10) <span class="info-dot" tabindex="0">i<span class="tip">Grundlast des Projekts. Wird auf die zugeordneten Personen aufgeteilt — gleichmäßig oder nach eigenem Anteil, einstellbar sobald Personen zugeordnet sind.</span></span></span><input type="number" name="load" value="5" min="1" max="30"></label>
+        <label><span class="lbltext">Kunde <span class="info-dot" tabindex="0">i<span class="tip">Für welchen Kunden das Projekt läuft (optional, rein informativ).</span></span></span><select name="clientId"><option value="">— keiner —</option></select></label>
+        <label><span class="lbltext">Projektleitung <span class="info-dot" tabindex="0">i<span class="tip">Wer die Projektleitung übernimmt. Bekommt zusätzlich zum eigenen Arbeitsanteil den Leitungsaufwand oben drauf. Fällt sie aus, gilt das Projekt als blockiert.</span></span></span><select name="leadId"><option value="">— keine —</option></select></label>
+        <label><span class="lbltext">Leitungsaufwand (extra) <span class="info-dot" tabindex="0">i<span class="tip">Zusätzliche, feste Last nur für die Projektleitung — oben auf ihren normalen Anteil am Projekt.</span></span></span><input type="number" name="leadOverhead" value="3" min="0"></label>
+        <button class="primary" type="submit">+ Projekt hinzufügen</button>
+      </form>
+    </details>
+
+    <details>
+      <summary>Ungeplante Aufgabe</summary>
+      <form id="form-task">
+        <label><span class="lbltext">Name <span class="info-dot" tabindex="0">i<span class="tip">Der Name der Aufgabe.</span></span></span><input type="text" name="name" required></label>
+        <label><span class="lbltext">Last (1–10) <span class="info-dot" tabindex="0">i<span class="tip">Wie viel Aufwand die Aufgabe verursacht.</span></span></span><input type="number" name="load" value="3" min="1" max="30"></label>
+        <label class="checkrow"><input type="checkbox" name="shareable" checked> teilbar auf mehrere Personen <span class="info-dot" tabindex="0">i<span class="tip">Teilbare Aufgaben verteilen ihre Last automatisch auf alle zugeordneten Personen. Nicht teilbare Aufgaben hängen komplett an einer Person — fällt sie aus, bleibt die Aufgabe liegen (blockiert).</span></span></label>
+        <button class="primary" type="submit">+ Aufgabe hinzufügen</button>
+      </form>
+    </details>
+
+    <details>
+      <summary>Spontaner Ausfall</summary>
+      <form id="form-absence">
+        <label><span class="lbltext">Person <span class="info-dot" tabindex="0">i<span class="tip">Welche Person in diesem Zeitraum nicht verfügbar ist.</span></span></span><select name="personId" required></select></label>
+        <div class="row2">
+          <label><span class="lbltext">Von Tag <span class="info-dot" tabindex="0">i<span class="tip">Erster Tag der Timeline, an dem die Person fehlt.</span></span></span><input type="number" name="startDay" value="1" min="1"></label>
+          <label><span class="lbltext">Bis Tag <span class="info-dot" tabindex="0">i<span class="tip">Letzter Tag, an dem die Person fehlt (kann gleich "Von Tag" sein für einen einzelnen Tag).</span></span></span><input type="number" name="endDay" value="1" min="1"></label>
         </div>
-    </header>
+        <label><span class="lbltext">Notiz (optional) <span class="info-dot" tabindex="0">i<span class="tip">Nur eine Erinnerung für dich selbst — wird in der Manager-Ansicht nicht angezeigt.</span></span></span><input type="text" name="note" placeholder="z.B. krank"></label>
+        <button class="primary" type="submit">+ Ausfall eintragen</button>
+      </form>
+      <div class="abslist" id="abslist" style="padding:0 12px 12px;"></div>
+    </details>
 
-    <!-- Hauptbereich -->
-    <main class="flex-grow max-w-4xl w-full mx-auto p-3 md:p-4 md:py-8 flex flex-col gap-4 md:gap-6">
-        
-        <!-- Status- und Kontrollleiste (Verbessert für Mobile Tabs) -->
-        <div class="flex flex-col gap-3 bg-dragon-charcoal border border-dragon-gold/30 p-3 rounded-lg text-sm text-parchment shadow-md">
-            <div class="flex items-center justify-between w-full">
-                <div class="flex items-center gap-2">
-                    <span class="font-cinzel text-dragon-gold font-bold text-xs md:text-sm">Fortschritt:</span>
-                    <span id="progress-text" class="font-mono bg-dragon-redDark px-2 py-0.5 rounded text-xs">0 / 24 beantwortet</span>
-                </div>
-                <div class="flex-grow h-2 max-w-xs bg-dragon-redDark rounded-full overflow-hidden mx-4 hidden md:block">
-                    <div id="progress-bar" class="h-full bg-gradient-to-r from-dragon-gold to-yellow-500 transition-all duration-300" style="width: 0%"></div>
-                </div>
-            </div>
-            
-            <!-- Mobile-Optimierte Tab Bar -->
-            <div class="grid grid-cols-3 gap-1 bg-dragon-redDark p-1 rounded-lg w-full">
-                <button onclick="switchView('focus')" id="btn-view-focus" class="px-2 py-2 text-xs md:text-sm rounded font-cinzel font-bold text-center transition">
-                    🔍 Fokus
-                </button>
-                <button onclick="switchView('overview')" id="btn-view-overview" class="px-2 py-2 text-xs md:text-sm rounded font-cinzel font-bold text-center transition">
-                    📋 Übersicht
-                </button>
-                <button onclick="switchView('export')" id="btn-view-export" class="px-2 py-2 text-xs md:text-sm rounded font-cinzel font-bold text-center transition">
-                    💾 Export/Import
-                </button>
-            </div>
-        </div>
+    <details>
+      <summary>Daten</summary>
+      <div style="padding:0 12px 12px;display:flex;flex-direction:column;gap:8px;">
+        <button class="primary" id="exportBtn" type="button">⬇ Als JSON exportieren</button>
+        <button class="ghost" id="importBtn" type="button">⬆ JSON importieren</button>
+        <input type="file" id="importFile" accept="application/json" style="display:none">
+      </div>
+    </details>
 
-        <!-- Notification Banner (für Erfolgs-/Fehlermeldungen beim Importieren) -->
-        <div id="notification-banner" class="hidden transition-all duration-300 p-3 rounded-lg text-center font-bold text-sm shadow-md"></div>
+    <p class="hint" style="color:var(--text-dimmer);font-size:11px;line-height:1.5;margin-top:16px;">
+      Knoten klicken = Details &amp; Zuordnung rechts. Ziehen (Maus/Finger) = Layout anpassen.
+      Rechtsklick auf leere Fläche = schnell hinzufügen.
+    </p>
+  </aside>
 
-        <!-- 1. FOKUS MODUS (Eine Frage nach der anderen) -->
-        <section id="view-focus" class="flex-grow flex flex-col justify-center">
-            <div class="parchment-texture border-4 border-dragon-gold rounded-xl shadow-2xl p-4 md:p-8 relative flex flex-col min-h-[340px] md:min-h-[400px] justify-between transition-all">
-                
-                <!-- D&D Dekoration -->
-                <div class="hidden sm:block absolute top-2 left-2 text-dragon-gold text-lg select-none opacity-40">⚔</div>
-                <div class="hidden sm:block absolute top-2 right-2 text-dragon-gold text-lg select-none opacity-40">⚔</div>
-                <div class="hidden sm:block absolute bottom-2 left-2 text-dragon-gold text-lg select-none opacity-40">⚔</div>
-                <div class="hidden sm:block absolute bottom-2 right-2 text-dragon-gold text-lg select-none opacity-40">⚔</div>
-
-                <!-- Kategorie-Badge & Fragenzähler -->
-                <div class="flex justify-between items-center border-b border-dragon-gold/30 pb-3 mb-3">
-                    <span id="focus-category-badge" class="font-cinzel font-black text-lg md:text-2xl text-dragon-red tracking-wider uppercase">
-                        KATEGORIE
-                    </span>
-                    <span id="focus-queue-index" class="text-[10px] md:text-xs bg-dragon-accent px-2 py-1 rounded-full font-bold font-mono text-dragon-charcoal">
-                        Frage 1 von 24
-                    </span>
-                </div>
-
-                <!-- Die Frage -->
-                <div class="my-2">
-                    <h3 id="focus-question-text" class="font-cinzel text-base md:text-xl font-bold text-dragon-charcoal mb-3 italic">
-                        Frage Text hier?
-                    </h3>
-                    <textarea id="focus-answer-input" 
-                        class="w-full h-32 md:h-44 p-3 border-2 border-dragon-accent rounded-lg bg-white/70 focus:bg-white focus:outline-none focus:border-dragon-red transition text-sm md:text-base leading-relaxed placeholder-dragon-accent"
-                        placeholder="Schreibe deine Gedanken hier auf..."
-                        oninput="saveCurrentFocusAnswer()"></textarea>
-                </div>
-
-                <!-- Steuerungstasten (Optimiertes Mobile Layout) -->
-                <div class="flex flex-col gap-2.5 mt-4 pt-3 border-t border-dragon-gold/20">
-                    <div class="grid grid-cols-2 gap-2 w-full">
-                        <button onclick="prevQuestion()" class="py-3 sm:py-2 px-4 font-cinzel font-bold text-xs md:text-sm bg-dragon-accent hover:bg-dragon-gold/30 rounded-lg transition text-dragon-charcoal text-center flex items-center justify-center gap-1">
-                            ← Zurück
-                        </button>
-                        <button onclick="nextQuestion()" class="py-3 sm:py-2 px-4 font-cinzel font-bold text-xs md:text-sm bg-dragon-red text-white hover:bg-dragon-redDark rounded-lg transition text-center flex items-center justify-center gap-1">
-                            Weiter →
-                        </button>
-                    </div>
-                    
-                    <button onclick="postponeCurrentQuestion()" class="w-full py-3 sm:py-2 px-4 font-cinzel font-bold text-xs md:text-sm bg-amber-500 text-dragon-charcoal hover:bg-amber-400 rounded-lg transition shadow-md flex items-center justify-center gap-1">
-                        ⏱ Später beantworten (Nach hinten stellen)
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- 2. ÜBERSICHTS MODUS (Alle Fragen kategorisiert) -->
-        <section id="view-overview" class="hidden space-y-4 md:space-y-6">
-            <div class="parchment-texture border-2 border-dragon-gold rounded-xl p-4 md:p-6 shadow-xl">
-                <h2 class="font-cinzel text-xl md:text-2xl font-black text-dragon-red border-b border-dragon-gold pb-2 mb-4 md:mb-6 text-center">
-                    VORBEREITUNGS-ÜBERSICHT
-                </h2>
-                
-                <div id="overview-categories-container" class="space-y-4 md:space-y-6">
-                    <!-- Dynamisch befüllt -->
-                </div>
-            </div>
-        </section>
-
-        <!-- 3. EXPORT & IMPORT MODUS -->
-        <section id="view-export" class="hidden flex flex-col gap-6">
-            <!-- Split Layout für Desktop, gestapelt für Mobile -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                
-                <!-- EXPORT-BEREICH (Links) -->
-                <div class="parchment-texture border-2 border-dragon-gold rounded-xl p-4 md:p-6 shadow-xl flex flex-col justify-between">
-                    <div>
-                        <h2 class="font-cinzel text-xl font-black text-dragon-red border-b border-dragon-gold pb-2 mb-3 text-center">
-                            DATEN EXPORTIEREN
-                        </h2>
-                        <p class="text-xs text-dragon-charcoal/80 mb-4 text-center">
-                            Wähle das Format aus und kopiere deine Arbeit oder lade sie als Datei herunter.
-                        </p>
-
-                        <!-- Format-Auswahl Grid-cols-3 -->
-                        <div class="grid grid-cols-3 gap-1.5 mb-4 max-w-sm mx-auto">
-                            <button onclick="generateExport('markdown')" id="btn-export-markdown" class="px-2 py-2 bg-dragon-red text-white rounded font-cinzel font-bold transition text-xs text-center shadow">
-                                MD (Markdown)
-                            </button>
-                            <button onclick="generateExport('plain')" id="btn-export-plain" class="px-2 py-2 bg-dragon-accent text-dragon-charcoal rounded font-cinzel font-bold transition text-xs text-center shadow">
-                                Text (.txt)
-                            </button>
-                            <button onclick="generateExport('json')" id="btn-export-json" class="px-2 py-2 bg-dragon-accent text-dragon-charcoal rounded font-cinzel font-bold transition text-xs text-center shadow">
-                                JSON (.json)
-                            </button>
-                        </div>
-
-                        <!-- Textbereich mit Export-Ausgabe -->
-                        <div class="relative">
-                            <textarea id="export-textarea" readonly class="w-full h-64 p-3 border border-dragon-accent bg-white/50 rounded font-mono text-xs focus:outline-none"></textarea>
-                        </div>
-                    </div>
-                    
-                    <!-- Aktionsbuttons für den Export -->
-                    <div class="grid grid-cols-2 gap-2 mt-4">
-                        <button onclick="copyToClipboard()" class="py-2.5 bg-dragon-charcoal text-parchment-light hover:bg-dragon-red rounded text-xs font-bold transition flex items-center justify-center gap-1">
-                            📋 Kopieren
-                        </button>
-                        <button onclick="downloadExportFile()" class="py-2.5 bg-dragon-red hover:bg-dragon-redDark text-white rounded text-xs font-bold transition flex items-center justify-center gap-1">
-                            💾 Datei laden
-                        </button>
-                    </div>
-                </div>
-
-                <!-- IMPORT-BEREICH (Rechts) -->
-                <div class="parchment-texture border-2 border-dragon-gold rounded-xl p-4 md:p-6 shadow-xl flex flex-col justify-between">
-                    <div>
-                        <h2 class="font-cinzel text-xl font-black text-dragon-red border-b border-dragon-gold pb-2 mb-3 text-center">
-                            DATEN IMPORTIEREN
-                        </h2>
-                        <p class="text-xs text-dragon-charcoal/80 mb-4 text-center">
-                            Lade eine exportierte JSON-Sitzungsdatei hoch oder füge den JSON-Code direkt ein.
-                        </p>
-
-                        <!-- Option A: Datei Import -->
-                        <div class="mb-4 p-3 border border-dashed border-dragon-accent rounded-lg bg-white/30 text-center">
-                            <span class="block text-xs font-bold text-dragon-charcoal mb-2">Option A: JSON-Datei hochladen</span>
-                            <label class="inline-flex items-center justify-center px-4 py-2 bg-dragon-charcoal hover:bg-dragon-red text-parchment-light rounded font-cinzel text-xs font-bold cursor-pointer transition shadow">
-                                📁 Datei auswählen
-                                <input type="file" id="import-file-input" class="hidden" accept=".json" onchange="importFromFile(event)">
-                            </label>
-                            <span id="import-file-name" class="block text-[10px] text-dragon-charcoal/60 mt-1 italic">Keine Datei ausgewählt</span>
-                        </div>
-
-                        <!-- Option B: Textfeld Import -->
-                        <div class="flex flex-col gap-1.5">
-                            <span class="block text-xs font-bold text-dragon-charcoal">Option B: JSON-Code hier einfügen</span>
-                            <textarea id="import-textarea" class="w-full h-24 p-2 border border-dragon-accent bg-white/50 rounded font-mono text-xs focus:outline-none placeholder-dragon-accent" 
-                                placeholder='{ "sessionTitle": "Session X", "answers": { ... } }'></textarea>
-                        </div>
-                    </div>
-
-                    <!-- Aktionsbutton für Textfeld Import -->
-                    <button onclick="importFromText()" class="w-full py-2.5 mt-4 bg-dragon-red hover:bg-dragon-redDark text-white rounded text-xs font-bold font-cinzel tracking-wider transition shadow">
-                        ⚡ JSON-Text importieren
-                    </button>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- Gefahrzone / Daten löschen -->
-        <div class="text-center mt-2">
-            <button onclick="confirmReset()" class="text-[11px] text-red-400 hover:text-red-500 hover:underline transition">
-                ⚠️ Alle Daten dieser Session zurücksetzen
-            </button>
-        </div>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-dragon-charcoal border-t border-dragon-gold/30 text-parchment/60 py-6 text-center text-xs mt-8">
-        <div class="max-w-4xl mx-auto px-4 space-y-2">
-            <p class="font-cinzel text-dragon-gold font-bold">DM Session Prep Helper • Version 1.2.0</p>
-            <p>Konzipiert für reibungslose Kampagnenvorbereitung. Daten werden automatisch offline im Browser gesichert.</p>
-        </div>
-    </footer>
-
-    <!-- Custom Modal für Bestätigungen (Ersetzt unschöne native Alerts) -->
-    <div id="confirm-modal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden p-4">
-        <div class="parchment-texture border-4 border-dragon-red p-5 rounded-xl max-w-sm w-full text-center shadow-2xl">
-            <h3 class="font-cinzel text-lg md:text-xl font-bold text-dragon-red mb-2">Bist du sicher?</h3>
-            <p class="text-xs md:text-sm text-dragon-charcoal mb-6">Deine gesamten aktuellen Antworten für diese Session werden unwiderruflich gelöscht!</p>
-            <div class="grid grid-cols-2 gap-2">
-                <button onclick="resetSession()" class="py-2.5 bg-dragon-red text-white font-bold rounded hover:bg-dragon-redDark transition text-xs md:text-sm">
-                    Ja, löschen
-                </button>
-                <button onclick="closeModal()" class="py-2.5 bg-dragon-accent text-dragon-charcoal font-bold rounded hover:bg-dragon-gold/30 transition text-xs md:text-sm">
-                    Abbrechen
-                </button>
-            </div>
-        </div>
+  <div id="main">
+    <div id="topbar">
+      <button class="iconbtn" id="openSidebar">☰ Hinzufügen</button>
+      <div id="stats"></div>
+      <div id="legend"><span>ruhig</span><div class="bar"></div><span>überlastet</span></div>
+      <button id="sortBtn" class="iconbtn-visible" type="button">↕ Sortieren</button>
+      <button id="undoBtn" class="iconbtn-visible" type="button" disabled>↩ Rückgängig</button>
+      <button id="employeeToggle" class="iconbtn-visible" type="button">Mitarbeiter-Ansicht</button>
+      <button id="modeToggle">Manager-Ansicht</button>
     </div>
 
-    <!-- JavaScript Logik -->
-    <script>
-        // Fragenkatalog direkt aus dem hochgeladenen Bild übertragen
-        const questionCatalog = [
-            // STORY
-            { id: "s1", category: "Story", text: "Wo endete die Geschichte beim letzten Mal?" },
-            { id: "s2", category: "Story", text: "Gibt es wichtige Handlungspunkte (Major Plot Points), die in dieser Sitzung auftreten könnten?" },
-            { id: "s3", category: "Story", text: "Gibt es kleinere Handlungspunkte (Minor Plot Points), die in dieser Sitzung auftreten könnten?" },
-            { id: "s4", category: "Story", text: "Erstelle einen kurzen Entwurf der Storyline für diese Sitzung." },
-            
-            // LOCATIONS
-            { id: "l1", category: "Locations", text: "Wo beginnen die Spieler diese Sitzung?" },
-            { id: "l2", category: "Locations", text: "Werden sie zu anderen Orten reisen?" },
-            { id: "l3", category: "Locations", text: "Ist es das erste Mal, dass sie diesen Ort sehen? Bereite eine Beschreibung vor und erstelle eine Liste der Dinge, die dort sind." },
-            { id: "l4", category: "Locations", text: "Waren sie schon einmal hier? Bereite eine Beschreibung vor, wie sich dieser Ort verändert hat." },
-            { id: "l5", category: "Locations", text: "Wirst du Karten verwenden? Sind diese vorbereitet?" },
-            
-            // CHARACTERS
-            { id: "c1", category: "Characters", text: "Welche NPCs werden die Spieler in dieser Sitzung wahrscheinlich treffen?" },
-            { id: "c2", category: "Characters", text: "Bereite jeden NPC mit ein paar leicht verständlichen Punkten zu Persönlichkeit, Aussehen, Absichten und Beruf vor." },
-            { id: "c3", category: "Characters", text: "Sind NPCs mit wichtigen Handlungspunkten verbunden? Welche lebenswichtigen Informationen könnten sie preisgeben?" },
-            { id: "c4", category: "Characters", text: "Bereite ein paar zufällige NPCs vor, die du bei Bedarf schnell hervorholen kannst." },
-            
-            // ENEMIES
-            { id: "e1", category: "Enemies", text: "Werden die Spieler in dieser Sitzung eine große Begegnung (Grand Encounter) haben?" },
-            { id: "e2", category: "Enemies", text: "Hast du alle Statblocks (Werteblöcke) und Beschreibungen vorbereitet?" },
-            { id: "e3", category: "Enemies", text: "Hast du ein paar dem Schwierigkeitsgrad angemessene Zufallsbegegnungen bereit?" },
-            
-            // TREASURE
-            { id: "t1", category: "Treasure", text: "Werden die Spieler in dieser Sitzung Beute erhalten, die die Geschichte vorantreibt?" },
-            { id: "t2", category: "Treasure", text: "Hast du Statblocks und Beschreibungen für alle magischen Gegenstände vorbereitet?" },
-            { id: "t3", category: "Treasure", text: "Hast du eine Tabelle für Zufallsbeute (Loot Table) vorbereitet?" },
-            
-            // RULE CHECK
-            { id: "r1", category: "Rule Check", text: "Gibt es Regeln, die du nachschlagen musst?" },
-            { id: "r2", category: "Rule Check", text: "Gab es unklare Regeln, die in der letzten Sitzung aufgetaucht sind?" },
-            { id: "r3", category: "Rule Check", text: "Gibt es Dinge, die du balancen musst (Hausregeln oder Homebrew)?" },
-            
-            // A REFRESHER
-            { id: "ref1", category: "Refresher", text: "Auffrischung: Lies kurz die Hintergrundgeschichten der Spielercharaktere (PCs). Füge zu jeder Hintergrundgeschichte ein paar Notizen hinzu, damit du nicht vergisst, sie mit der aktuellen Story zu verknüpfen." }
-        ];
+    <div id="graphwrap"><svg id="svg"></svg></div>
 
-        // Anwendungsstatus (State)
-        let answers = {};
-        let activeQueue = []; // Liste der IDs in Bearbeitungsreihenfolge
-        let currentQueueIndex = 0;
-        let currentExportFormat = 'markdown'; // Behält das aktuell gewählte Exportformat im Blick
+    <div id="managerView">
+      <div class="mgrid" id="mgrid"></div>
+    </div>
 
-        // Lokale Speicherdaten-Schlüssel
-        const STORAGE_KEY_ANSWERS = "dm_prep_answers";
-        const STORAGE_KEY_TITLE = "dm_prep_session_title";
-        const STORAGE_KEY_QUEUE = "dm_prep_active_queue";
-        const STORAGE_KEY_INDEX = "dm_prep_queue_index";
+    <div id="employeeView">
+      <div class="emp-picker" id="empPicker"></div>
+      <div class="mgrid" id="empList"></div>
+    </div>
 
-        // Initialisierung beim Laden der Seite
-        window.onload = function() {
-            loadSavedData();
-            
-            // Falls keine Queue gespeichert war, erstelle sie neu
-            if (!activeQueue || activeQueue.length === 0) {
-                initializeDefaultQueue();
-            }
+    <div id="timeline">
+      <button id="playbtn">▶</button>
+      <div class="daylabel" id="daylabel">Tag 1</div>
+      <input type="range" id="dayrange" min="0" max="13" value="0" step="1">
+      <div id="activeOut"></div>
+      <div class="totaldays">Zeitraum<input type="number" id="totalDaysInput" value="14" min="2" max="90">Tage</div>
+    </div>
+  </div>
 
-            renderFocusQuestion();
-            renderOverview();
-            updateProgress();
-            
-            // PWA Standard Service Worker Registrierung
-            if ('serviceWorker' in navigator) {
-                const swCode = `
-                    self.addEventListener('install', e => {
-                        self.skipWaiting();
-                    });
-                    self.addEventListener('fetch', e => {
-                        e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
-                    });
-                `;
-                const blob = new Blob([swCode], {type: 'application/javascript'});
-                const swUrl = URL.createObjectURL(blob);
-                navigator.serviceWorker.register(swUrl).catch(err => console.log('SW registration failed', err));
-            }
-        };
+  <aside id="detail">
+    <button class="panel-close" id="closeDetail">✕</button>
+    <div id="detail-content"><p class="empty">Noch nichts ausgewählt.<br>Klick auf einen Knoten in der Grafik.</p></div>
+  </aside>
 
-        // Standardreihenfolge herstellen
-        function initializeDefaultQueue() {
-            activeQueue = questionCatalog.map(q => q.id);
-            currentQueueIndex = 0;
-            saveData();
+</div>
+
+<div class="ctxmenu" id="ctxmenu">
+  <button data-kind="person">+ Person</button>
+  <button data-kind="client">+ Kunde</button>
+  <button data-kind="project">+ Projekt</button>
+  <button data-kind="task">+ Aufgabe</button>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------------- state ----------------
+  let counter = 1;
+  const uid = p => p + '_' + (counter++);
+
+  const state = {
+    people: [],
+    clients: [],
+    items: [],
+    absences: [] // {id, personId, startDay, endDay, note}  -- days are 1-indexed for humans
+  };
+  const timeline = { totalDays: 14, currentDay: 0 }; // currentDay is 0-indexed internally
+  let selectedId = null;
+  let hoveredId = null;
+  let managerMode = false;
+  let employeeMode = false;
+  const selectedEmployees = new Set();
+  let currentNodesSel = null, currentLinksSel = null, currentLinksData = [];
+  let playTimer = null;
+  const nodeById = new Map();
+  const pendingPositions = new Map(); // id -> {x,y} for freshly created nodes (right-click add)
+
+  function getInitPos(id){
+    const prev = nodeById.get(id);
+    if(prev) return {x:prev.x, y:prev.y, vx:prev.vx, vy:prev.vy, fx:prev.fx, fy:prev.fy};
+    const pend = pendingPositions.get(id);
+    if(pend){ pendingPositions.delete(id); return {x:pend.x, y:pend.y}; }
+    return {};
+  }
+
+  // ---------------- helpers ----------------
+  function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function infoDot(tip){
+    return `<span class="info-dot" tabindex="0">i<span class="tip">${escapeHtml(tip)}</span></span>`;
+  }
+  function lbl(text, tip){
+    return tip ? `<span class="lbltext">${text} ${infoDot(tip)}</span>` : text;
+  }
+  function humanDay(d){ return d + 1; } // internal 0-index -> display 1-index
+  function personOutOn(personId, day /*0-indexed*/){
+    const hd = humanDay(day);
+    return state.absences.some(a => a.personId === personId && hd >= a.startDay && hd <= a.endDay);
+  }
+  function absencesOnDay(day){
+    const hd = humanDay(day);
+    return state.absences.filter(a => hd >= a.startDay && hd <= a.endDay);
+  }
+  // a phase temporarily overrides an item's base load for a day range — lets a
+  // project/task be modeled as "normally light, but brutal in week 3" etc.
+  function effectiveLoad(it, day){
+    if(it.phases && it.phases.length){
+      const hd = humanDay(day);
+      const match = it.phases.find(ph => hd >= ph.startDay && hd <= ph.endDay);
+      if(match) return match.load;
+    }
+    return it.load;
+  }
+  function weightOf(it, pid){
+    return (it.weights && it.weights[pid] != null) ? it.weights[pid] : 1;
+  }
+
+  // ---------------- load calc (day-aware) ----------------
+  function computeLoads(day){
+    const loads = new Map();
+    state.people.forEach(p => loads.set(p.id, {total:0, breakdown:[]}));
+    state.items.forEach(it => {
+      const isOutFn = pid => personOutOn(pid, day);
+      const L = effectiveLoad(it, day);
+      if(it.type === 'task' && !it.shareable){
+        if(it.assignees.length > 0){
+          const pid = it.assignees[0];
+          if(isOutFn(pid)){
+            it.__blocked = true;
+          } else {
+            it.__blocked = false;
+            const l = loads.get(pid);
+            if(l){ l.total += L; l.breakdown.push({name: it.name + ' (nicht teilbar)', share: L}); }
+          }
+        } else { it.__blocked = false; }
+      } else {
+        const effective = it.assignees.filter(pid => !isOutFn(pid));
+        it.__blocked = (it.assignees.length > 0 && effective.length === 0);
+        if(effective.length > 0){
+          const totalW = effective.reduce((s,pid) => s + weightOf(it,pid), 0) || effective.length;
+          effective.forEach(pid => {
+            const share = L * (weightOf(it,pid) / totalW);
+            const l = loads.get(pid);
+            if(l){ l.total += share; l.breakdown.push({name: it.name, share}); }
+          });
         }
-
-        // Lade gespeicherte Daten
-        function loadSavedData() {
-            try {
-                const savedAnswers = localStorage.getItem(STORAGE_KEY_ANSWERS);
-                if (savedAnswers) answers = JSON.parse(savedAnswers);
-
-                const savedTitle = localStorage.getItem(STORAGE_KEY_TITLE);
-                if (savedTitle) document.getElementById("session-title").value = savedTitle;
-
-                const savedQueue = localStorage.getItem(STORAGE_KEY_QUEUE);
-                if (savedQueue) activeQueue = JSON.parse(savedQueue);
-
-                const savedIndex = localStorage.getItem(STORAGE_KEY_INDEX);
-                if (savedIndex) currentQueueIndex = parseInt(savedIndex, 10);
-            } catch (e) {
-                console.error("Fehler beim Laden der lokalen Spieldaten", e);
-            }
+      }
+      if(it.type === 'project' && it.leadId){
+        it.__leadOut = personOutOn(it.leadId, day);
+        if(!it.__leadOut){
+          const oh = it.leadOverhead || 0;
+          if(oh > 0){
+            const l = loads.get(it.leadId);
+            if(l){ l.total += oh; l.breakdown.push({name: it.name + ' (Leitung)', share: oh}); }
+          }
         }
+      } else if(it.type === 'project'){ it.__leadOut = false; }
+    });
+    return loads;
+  }
 
-        // Daten persistent speichern
-        function saveData() {
-            localStorage.setItem(STORAGE_KEY_ANSWERS, JSON.stringify(answers));
-            localStorage.setItem(STORAGE_KEY_TITLE, document.getElementById("session-title").value);
-            localStorage.setItem(STORAGE_KEY_QUEUE, JSON.stringify(activeQueue));
-            localStorage.setItem(STORAGE_KEY_INDEX, currentQueueIndex.toString());
-            updateProgress();
+  function stressColor(ratio){
+    ratio = Math.max(0, ratio);
+    if(ratio <= 0.6) return d3.interpolateRgb('#1b3a3a', '#2dd4bf')(ratio/0.6);
+    if(ratio <= 1)   return d3.interpolateRgb('#2dd4bf', '#f5a524')((ratio-0.6)/0.4);
+    if(ratio <= 1.5) return d3.interpolateRgb('#f5a524', '#ef4444')((ratio-1)/0.5);
+    return '#ef4444';
+  }
+  function personRadius(ratio){ return 13 + Math.min(ratio, 1.5) * 9; }
+  function projectRadius(load){ return 22 + Math.min(load, 30) * 3.4; }
+  function taskRadius(load){ return 11 + Math.min(load, 30) * 1.6; }
+  function nodeRadiusFor(d){
+    if(d.ntype === 'person') return personRadius(d.ratio||0);
+    if(d.ntype === 'client') return 15;
+    const ld = d.effLoad !== undefined ? d.effLoad : d.load;
+    if(d.ntype === 'project') return projectRadius(ld);
+    return taskRadius(ld);
+  }
+  // binary status styling: everything okay = green + dashed; error = red, opaque, thicker
+  function statusStyle(isError){
+    return isError
+      ? {stroke:'#ef4444', dash:null, width:3.5, fillOpacity:1}
+      : {stroke:'#22c55e', dash:'5 4', width:2, fillOpacity:0.55};
+  }
+  function itemHasError(it, day, loads){
+    if(it.__blocked) return true;
+    if(it.type === 'project' && it.__leadOut) return true;
+    if(it.assignees.length === 0) return true;
+    for(const pid of it.assignees){
+      if(personOutOn(pid, day)) return true;
+      const p = state.people.find(pp=>pp.id===pid);
+      const l = loads.get(pid);
+      const ratio = (p && l) ? l.total / p.capacity : 0;
+      if(ratio > 1) return true;
+    }
+    return false;
+  }
+  // finer-grained severity for projects: ok (green) -> demanding (yellow) -> hot (orange) -> error (red)
+  function projectSeverity(it, day, loads){
+    if(it.assignees.length === 0) return 'error';
+    if(it.__leadOut) return 'error';
+    const effective = it.assignees.filter(pid => !personOutOn(pid, day));
+    if(effective.length === 0) return 'error';
+    const anyOut = effective.length < it.assignees.length;
+    let maxRatio = 0;
+    it.assignees.forEach(pid => {
+      if(personOutOn(pid, day)) return;
+      const p = state.people.find(pp=>pp.id===pid);
+      const l = loads.get(pid);
+      const ratio = (p && l) ? l.total / p.capacity : 0;
+      if(ratio > maxRatio) maxRatio = ratio;
+    });
+    if(maxRatio > 1.4) return 'error';
+    if(maxRatio > 1.15 || anyOut) return 'hot';
+    if(maxRatio > 1.0) return 'demanding';
+    return 'ok';
+  }
+  function projectStatusStyle(sev){
+    switch(sev){
+      case 'error':      return {fill:'#5a2020', stroke:'#ef4444', dash:null,  width:3.5, fillOpacity:1};
+      case 'hot':        return {fill:'#5a3a12', stroke:'#f97316', dash:null,  width:3,   fillOpacity:0.85};
+      case 'demanding':  return {fill:'#4a3f12', stroke:'#eab308', dash:'6 3', width:2.3, fillOpacity:0.65};
+      default:           return {fill:'#2c3e6e', stroke:'#22c55e', dash:'5 4', width:2,   fillOpacity:0.55};
+    }
+  }
+
+  // ---------------- icons ----------------
+  const ICONS = ['user','users','user-cog','user-check','graduation-cap','headset','building-2','building',
+    'handshake','briefcase','rocket','target','flag','folder-kanban','clipboard-list','wrench','shuffle','lock',
+    'zap','bug','mail','phone','plane','heart-pulse','code-2','palette','server','database','shield','star',
+    'bell','calendar','alert-triangle','package','truck','credit-card','message-square','git-branch','laptop','coffee'];
+  function defaultIconFor(type, obj){
+    if(type === 'person') return 'user';
+    if(type === 'client') return 'building-2';
+    if(type === 'project') return 'rocket';
+    if(type === 'task') return (obj && obj.shareable) ? 'users' : 'lock';
+    return 'circle';
+  }
+  async function loadIconSprite(){
+    try{
+      const res = await fetch('https://unpkg.com/lucide-static@latest/sprite.svg');
+      const text = await res.text();
+      const doc = new DOMParser().parseFromString(text, 'image/svg+xml');
+      doc.querySelectorAll('symbol').forEach(s => {
+        document.getElementById('iconDefs').appendChild(document.importNode(s, true));
+      });
+      render(false);
+    } catch(err){ console.warn('Icon-Sprite konnte nicht geladen werden', err); }
+  }
+
+  // ---------------- graph build ----------------
+  function buildGraph(){
+    const day = timeline.currentDay;
+    const loads = computeLoads(day);
+    const nodes = [];
+
+    state.people.forEach(p => {
+      const l = loads.get(p.id) || {total:0, breakdown:[]};
+      const out = personOutOn(p.id, day);
+      const ratio = l.total / p.capacity;
+      nodes.push(Object.assign({}, p, {ntype:'person', ratio, totalLoad:l.total, breakdown:l.breakdown, out}, getInitPos(p.id)));
+    });
+    state.clients.forEach(c => {
+      nodes.push(Object.assign({}, c, {ntype:'client'}, getInitPos(c.id)));
+    });
+    state.items.forEach(it => {
+      nodes.push(Object.assign({}, it, {ntype: it.type, hasError: itemHasError(it, day, loads),
+        severity: it.type==='project' ? projectSeverity(it, day, loads) : null,
+        effLoad: effectiveLoad(it, day)}, getInitPos(it.id)));
+    });
+
+    nodeById.clear();
+    nodes.forEach(n => nodeById.set(n.id, n));
+
+    const links = [];
+    state.items.forEach(it => {
+      const n = (it.type === 'task' && !it.shareable) ? 1 : it.assignees.length;
+      it.assignees.forEach(pid => {
+        links.push({source: it.id, target: pid, ltype:'assign', weight: n ? it.load/n : it.load});
+      });
+      if(it.type === 'project'){
+        if(it.clientId) links.push({source: it.id, target: it.clientId, ltype:'client', weight:1});
+        if(it.leadId)   links.push({source: it.id, target: it.leadId,   ltype:'lead', weight: it.leadOverhead||3});
+      }
+    });
+    return {nodes, links, loads};
+  }
+
+  // ---------------- svg setup ----------------
+  const svg = d3.select('#svg');
+  const iconDefsSel = svg.append('defs').attr('id','iconDefs');
+  const container = svg.append('g').attr('class','zoom-root');
+  const gBandsZ = container.append('g').attr('class','bands');
+  const gLinksZ = container.append('g').attr('class','links');
+  const gNodesZ = container.append('g').attr('class','nodes');
+
+  svg.call(d3.zoom().scaleExtent([0.3,2.5]).on('zoom', ev => container.attr('transform', ev.transform)));
+
+  function dims(){ const el = document.getElementById('graphwrap'); return {w: el.clientWidth, h: el.clientHeight}; }
+  function bandY(ntype, h){
+    if(ntype === 'client') return h * 0.10;
+    if(ntype === 'project') return h * 0.32;
+    if(ntype === 'task') return h * 0.58;
+    return h * 0.85; // person
+  }
+
+  const simulation = d3.forceSimulation()
+    .force('link', d3.forceLink().id(d => d.id).distance(d => d.ltype==='client'?90:(d.ltype==='lead'?90:80)).strength(d => d.ltype==='client'?0.15:0.25))
+    .force('charge', d3.forceManyBody().strength(-260))
+    .force('x', d3.forceX(() => dims().w/2).strength(0.025))
+    .force('y', d3.forceY(d => bandY(d.ntype, dims().h)).strength(0.9))
+    .force('collision', d3.forceCollide().radius(d => nodeRadiusFor(d) + 16));
+
+  function renderBands(w, h){
+    const rows = [
+      {y: bandY('client', h), label: 'Kunden'},
+      {y: bandY('project', h), label: 'Projekte'},
+      {y: bandY('task', h), label: 'Aufgaben'},
+      {y: bandY('person', h), label: 'Personen'}
+    ];
+    const sel = gBandsZ.selectAll('g.bandrow').data(rows, d => d.label);
+    const enter = sel.enter().append('g').attr('class','bandrow');
+    enter.append('line').attr('class','bandline');
+    enter.append('text').attr('class','bandlabel');
+    const all = enter.merge(sel);
+    all.select('line.bandline').attr('x1', 16).attr('x2', Math.max(w-16,16)).attr('y1', d=>d.y-1).attr('y2', d=>d.y-1);
+    all.select('text.bandlabel').attr('x', 14).attr('y', d=>d.y-10).text(d=>d.label);
+  }
+
+  function render(structural){
+    if(structural === undefined) structural = true;
+    saveLocal();
+    if(managerMode){ renderManager(); renderTimeline(); return; }
+    if(employeeMode){ renderEmployeeView(); renderTimeline(); return; }
+    const {w,h} = dims();
+    renderBands(w, h);
+    const {nodes, links} = buildGraph();
+    simulation.nodes(nodes).on('tick', ticked);
+    simulation.force('link').links(links);
+    if(structural) simulation.alpha(0.7).restart();
+
+    const linkSel = gLinksZ.selectAll('line').data(links, d => (d.source.id||d.source) + '-' + (d.target.id||d.target));
+    linkSel.exit().remove();
+    const linkAll = linkSel.enter().append('line')
+      .attr('class', d => 'link' + (d.ltype==='lead'?' link-lead': d.ltype==='client' ? ' link-client':''))
+      .merge(linkSel)
+      .attr('stroke-width', d => d.ltype==='assign' ? Math.max(1.5, Math.min(8, d.weight*0.9)) : (d.ltype==='lead'?2:1.4));
+
+    const nodeSel = gNodesZ.selectAll('g.node').data(nodes, d => d.id);
+    nodeSel.exit().remove();
+    const nodeEnter = nodeSel.enter().append('g').attr('class','node');
+    nodeEnter.each(function(d){
+      const g = d3.select(this);
+      g.append('circle').attr('class','hit');
+      if(d.ntype === 'person') g.append('circle').attr('class','shape');
+      else if(d.ntype === 'client') g.append('path').attr('class','shape');
+      else if(d.ntype === 'project') g.append('rect').attr('class','shape');
+      else g.append('polygon').attr('class','shape');
+      g.append('use').attr('class','node-icon');
+      g.append('text').attr('class','node-label');
+      g.append('text').attr('class','node-sub');
+    });
+    const nodeAll = nodeEnter.merge(nodeSel);
+
+    nodeAll.each(function(d){
+      const g = d3.select(this);
+      const r = nodeRadiusFor(d);
+      const isSelected = d.id === selectedId;
+      g.select('circle.hit').attr('r', r + 12);
+
+      const iconName = d.icon || defaultIconFor(d.ntype, d);
+      const iconSize = Math.max(16, Math.min(36, r*0.62));
+      g.select('use.node-icon')
+        .attr('href', '#'+iconName)
+        .attr('x', -iconSize/2).attr('y', -iconSize/2)
+        .attr('width', iconSize).attr('height', iconSize);
+
+      if(d.ntype === 'person'){
+        const col = stressColor(d.ratio||0);
+        const err = !d.out && (d.ratio||0) > 1;
+        const st = statusStyle(err);
+        g.select('circle.shape').attr('r', r).attr('fill', col)
+          .attr('fill-opacity', d.out ? 0.25 : st.fillOpacity)
+          .attr('stroke', isSelected ? '#fff' : st.stroke)
+          .attr('stroke-width', isSelected ? 3 : st.width)
+          .attr('stroke-dasharray', isSelected ? null : st.dash)
+          .classed('selected', isSelected).classed('out', d.out);
+      } else if(d.ntype === 'client'){
+        const s = 13;
+        g.select('path.shape').attr('d', `M0,${-s} L${s},0 L0,${s} L${-s},0 Z`)
+          .attr('fill','var(--client)').attr('fill-opacity',0.35)
+          .attr('stroke', isSelected?'#fff':'var(--client)')
+          .attr('stroke-width', isSelected?3:2).attr('stroke-dasharray', '4 3')
+          .classed('selected', isSelected);
+      } else if(d.ntype === 'project'){
+        const st = projectStatusStyle(d.severity);
+        g.select('rect.shape').attr('x',-r).attr('y',-r*0.75).attr('width',r*2).attr('height',r*1.5).attr('rx',6)
+          .attr('fill', st.fill).attr('fill-opacity', st.fillOpacity)
+          .attr('stroke', isSelected?'#fff':st.stroke)
+          .attr('stroke-width', isSelected?3:st.width)
+          .attr('stroke-dasharray', isSelected ? null : st.dash)
+          .classed('selected',isSelected);
+      } else {
+        const st = statusStyle(d.hasError);
+        const tp = `0,${-r} ${(r*0.866).toFixed(1)},${(r*0.5).toFixed(1)} ${(-r*0.866).toFixed(1)},${(r*0.5).toFixed(1)}`;
+        g.select('polygon.shape').attr('points', tp)
+          .attr('fill', d.hasError ? '#5a2020' : (d.shareable ? '#1f4a48' : '#4a3320'))
+          .attr('fill-opacity', st.fillOpacity)
+          .attr('stroke', isSelected?'#fff':st.stroke)
+          .attr('stroke-width', isSelected?3:st.width)
+          .attr('stroke-dasharray', isSelected ? null : st.dash)
+          .attr('stroke-linejoin', 'round')
+          .classed('selected',isSelected);
+      }
+
+      g.select('text.node-label').attr('y', d.ntype==='project' ? -r*0.75-8 : -r-7)
+        .text(d.name.length>16 ? d.name.slice(0,15)+'…' : d.name);
+      g.select('text.node-sub').attr('y', d.ntype==='project' ? r*0.75+14 : r+14)
+        .text(
+          d.ntype==='person' ? (d.out ? 'ausgefallen' : Math.round((d.ratio||0)*100)+'%') :
+          d.ntype==='client' ? 'Kunde' :
+          d.ntype==='task' ? (d.__blocked ? 'blockiert' : (d.shareable?'teilbar · ':'fix · ')+d.effLoad) :
+          ({error:'kritisch', hot:'hot', demanding:'demanding', ok:'Projekt · '+d.effLoad}[d.severity] || 'Projekt · '+d.effLoad)
+        );
+    });
+
+    nodeAll.call(d3.drag().on('start',dragstarted).on('drag',dragged).on('end',dragended));
+    nodeAll.on('click', function(ev, d){
+      if(d.__dragMoved){ d.__dragMoved = false; return; }
+      selectedId = d.id;
+      renderDetail();
+      openDetailMobile();
+      render();
+    });
+    nodeAll.on('mouseenter', (ev, d) => { hoveredId = d.id; applyFocus(); })
+           .on('mouseleave', () => { hoveredId = null; applyFocus(); });
+
+    function ticked(){
+      linkAll.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y).attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);
+      nodeAll.attr('transform', d => `translate(${d.x},${d.y})`);
+    }
+    function dragstarted(ev,d){ if(!ev.active) simulation.alphaTarget(0.25).restart(); d.fx=d.x; d.fy=d.y; d.__dragStart={x:ev.x,y:ev.y}; d.__dragMoved=false; }
+    function dragged(ev,d){ d.fx=ev.x; d.fy=ev.y; if(Math.abs(ev.x-d.__dragStart.x)>4||Math.abs(ev.y-d.__dragStart.y)>4) d.__dragMoved=true; }
+    function dragended(ev){ if(!ev.active) simulation.alphaTarget(0); }
+
+    currentNodesSel = nodeAll;
+    currentLinksSel = linkAll;
+    currentLinksData = links;
+    applyFocus();
+
+    renderStats(nodes);
+    renderTimeline();
+  }
+
+  // focus/dim: hovering or selecting a node fades everything not connected to it,
+  // and only the focused node shows its secondary status line — this is what
+  // keeps the graph legible instead of showing every label at once.
+  function applyFocus(){
+    if(!currentNodesSel) return;
+    const focusId = hoveredId || selectedId;
+    if(!focusId){
+      currentNodesSel.classed('dim', false).classed('show-sub', false);
+      if(currentLinksSel) currentLinksSel.classed('dim', false);
+      return;
+    }
+    const neighbors = new Set([focusId]);
+    currentLinksData.forEach(l => {
+      const sId = l.source.id || l.source, tId = l.target.id || l.target;
+      if(sId === focusId) neighbors.add(tId);
+      if(tId === focusId) neighbors.add(sId);
+    });
+    currentNodesSel.classed('dim', d => !neighbors.has(d.id));
+    currentNodesSel.classed('show-sub', d => d.id === focusId);
+    if(currentLinksSel){
+      currentLinksSel.classed('dim', l => {
+        const sId = l.source.id || l.source, tId = l.target.id || l.target;
+        return !(sId === focusId || tId === focusId);
+      });
+    }
+  }
+
+  // ---------------- stats bar ----------------
+  function renderStats(nodes){
+    const el = document.getElementById('stats');
+    if(state.people.length === 0){ el.innerHTML = '<span>Noch keine Personen angelegt.</span>'; return; }
+    const people = nodes.filter(n => n.ntype === 'person');
+    const active = people.filter(p => !p.out);
+    const avg = active.length ? active.reduce((s,p)=>s+p.ratio,0)/active.length : 0;
+    const top = active.slice().sort((a,b)=>b.ratio-a.ratio)[0];
+    const overCount = active.filter(p=>p.ratio>1).length;
+    const outCount = people.filter(p=>p.out).length;
+    el.innerHTML = `
+      <span>${people.length} Person${people.length===1?'':'en'}</span>
+      <span>Ø Auslastung <b>${Math.round(avg*100)}%</b></span>
+      ${top ? `<span>am stärksten: <b>${top.name} (${Math.round(top.ratio*100)}%)</b></span>` : ''}
+      <span style="color:${overCount>0?'var(--red)':'var(--text-dim)'}">${overCount} über 100%</span>
+      ${outCount>0 ? `<span style="color:var(--red)">${outCount} heute ausgefallen</span>` : ''}
+    `;
+  }
+
+  // ---------------- timeline bar ----------------
+  function renderTimeline(){
+    document.getElementById('daylabel').textContent = 'Tag ' + humanDay(timeline.currentDay) + ' / ' + timeline.totalDays;
+    document.getElementById('dayrange').max = timeline.totalDays - 1;
+    document.getElementById('dayrange').value = timeline.currentDay;
+    document.getElementById('totalDaysInput').value = timeline.totalDays;
+    const active = absencesOnDay(timeline.currentDay);
+    const el = document.getElementById('activeOut');
+    if(active.length === 0){ el.textContent = ''; return; }
+    const names = active.map(a => { const p = state.people.find(pp=>pp.id===a.personId); return p ? p.name : '?'; });
+    el.textContent = 'heute draußen: ' + names.join(', ');
+  }
+
+  function renderAbsenceList(){
+    const el = document.getElementById('abslist');
+    if(state.absences.length === 0){ el.innerHTML = ''; return; }
+    el.innerHTML = state.absences.map(a => {
+      const p = state.people.find(pp=>pp.id===a.personId);
+      return `<div class="absitem"><span>${escapeHtml(p?p.name:'?')} · Tag ${a.startDay}–${a.endDay}${a.note?' · '+escapeHtml(a.note):''}</span><button data-id="${a.id}">✕</button></div>`;
+    }).join('');
+    el.querySelectorAll('button[data-id]').forEach(b => b.addEventListener('click', () => {
+      state.absences = state.absences.filter(a => a.id !== b.getAttribute('data-id'));
+      renderAbsenceList(); render();
+    }));
+  }
+
+  // ---------------- manager mode ----------------
+  function evalProjectDay(project, day, loads){
+    let level = 'ok';
+    let structural = false;
+    const involved = new Set();
+    const detail = [];
+    if(project.assignees.length === 0){
+      level = 'error'; structural = true;
+    } else {
+      project.assignees.forEach(pid => {
+        const p = state.people.find(pp=>pp.id===pid);
+        if(!p) return;
+        if(personOutOn(pid, day)){
+          level = 'error'; involved.add(p.name); detail.push(p.name + ' ist ausgefallen');
+        } else {
+          const l = loads.get(pid);
+          const ratio = l ? l.total / p.capacity : 0;
+          if(ratio > 1){ level = 'error'; involved.add(p.name); detail.push(p.name + ' ist über Kapazität (' + Math.round(ratio*100) + '%)'); }
         }
+      });
+    }
+    if(project.leadId){
+      const lead = state.people.find(pp=>pp.id===project.leadId);
+      if(lead && personOutOn(project.leadId, day)){ level = 'error'; involved.add(lead.name); detail.push('Leitung ' + lead.name + ' ist ausgefallen'); }
+    }
+    return {level, involved: Array.from(involved), structural, detail};
+  }
 
-        // Fortschrittsbalken und Text aktualisieren
-        function updateProgress() {
-            const total = questionCatalog.length;
-            const answeredCount = questionCatalog.filter(q => answers[q.id] && answers[q.id].trim().length > 0).length;
-            
-            document.getElementById("progress-text").textContent = `${answeredCount} / ${total} beantwortet`;
-            
-            const percent = total > 0 ? (answeredCount / total) * 100 : 0;
-            document.getElementById("progress-bar").style.width = `${percent}%`;
+  function buildProjectLog(project){
+    const entries = [];
+    for(let d = 0; d < timeline.totalDays; d++){
+      const loads = computeLoads(d);
+      const r = evalProjectDay(project, d, loads);
+      entries.push(Object.assign({human: humanDay(d)}, r));
+    }
+    computeLoads(timeline.currentDay); // restore flags for the actually-displayed day
+    const collapsed = [];
+    entries.forEach(e => {
+      const sig = e.level + '|' + e.detail.join('|');
+      const last = collapsed[collapsed.length-1];
+      if(last && last.sig === sig) last.endDay = e.human;
+      else collapsed.push({startDay:e.human, endDay:e.human, level:e.level, involved:e.involved, structural:e.structural, detail:e.detail, sig});
+    });
+    return collapsed;
+  }
+
+  // ---------------- employee view ----------------
+  function renderEmployeeView(){
+    const day = timeline.currentDay;
+    const loads = computeLoads(day);
+
+    const picker = document.getElementById('empPicker');
+    if(state.people.length === 0){
+      picker.innerHTML = '<span class="hint">Noch keine Personen angelegt.</span>';
+    } else {
+      picker.innerHTML = state.people.map(p =>
+        `<label><input type="checkbox" data-pid="${p.id}" ${selectedEmployees.has(p.id)?'checked':''}> ${escapeHtml(p.name)}</label>`
+      ).join('');
+      picker.querySelectorAll('input[type=checkbox]').forEach(cb => {
+        cb.addEventListener('change', e => {
+          const pid = e.target.getAttribute('data-pid');
+          if(e.target.checked) selectedEmployees.add(pid); else selectedEmployees.delete(pid);
+          renderEmployeeView();
+        });
+      });
+    }
+
+    const list = document.getElementById('empList');
+    document.getElementById('stats').innerHTML = `<span>Mitarbeiter-Ansicht · ${selectedEmployees.size} ausgewählt</span>`;
+    if(selectedEmployees.size === 0){
+      list.innerHTML = '<div class="mgrid-empty">Wähle oben mindestens eine Person aus, um ihre Auslastung zu sehen.</div>';
+      return;
+    }
+    list.innerHTML = Array.from(selectedEmployees).map(pid => {
+      const p = state.people.find(pp=>pp.id===pid);
+      if(!p) return '';
+      const out = personOutOn(pid, day);
+      const l = loads.get(pid) || {total:0, breakdown:[]};
+      const ratio = l.total / p.capacity;
+      const col = stressColor(ratio);
+      return `
+        <div class="emp-card">
+          <div class="emp-card-head"><h3>${escapeHtml(p.name)}</h3>${out ? '<span class="emp-out-flag">heute ausgefallen</span>' : ''}</div>
+          <div class="emp-bar-track"><div class="emp-bar-fill" style="width:${Math.min(100, ratio*100)}%;background:${col}"></div></div>
+          <div class="emp-pct" style="color:${col}">${Math.round(ratio*100)}% · ${l.total.toFixed(1)} von ${p.capacity}</div>
+          <ul class="breakdown">${l.breakdown.length ? l.breakdown.map(b=>`<li><span>${escapeHtml(b.name)}</span><span class="mono">${b.share.toFixed(1)}</span></li>`).join('') : '<li>Keine Zuordnungen heute</li>'}</ul>
+        </div>`;
+    }).join('');
+  }
+
+  function renderManager(){
+    const day = timeline.currentDay;
+    const loads = computeLoads(day);
+    const projects = state.items.filter(i => i.type === 'project');
+    const grid = document.getElementById('mgrid');
+    if(projects.length === 0){
+      grid.innerHTML = '<div class="mgrid-empty">Noch keine Projekte angelegt.</div>';
+      renderStatsManagerHidden();
+      return;
+    }
+    grid.innerHTML = projects.map(p => {
+      const {level, involved, structural} = evalProjectDay(p, day, loads);
+      const client = state.clients.find(c=>c.id===p.clientId);
+      const lead = state.people.find(pp=>pp.id===p.leadId);
+      const involvedLine = (level==='error' && !structural && involved.length)
+        ? `<div class="mcard-involved">Beteiligt: ${involved.map(escapeHtml).join(', ')}</div>` : '';
+      const structuralLine = (level==='error' && structural) ? `<div class="mcard-involved">Kein Team zugeordnet</div>` : '';
+      return `
+        <div class="mcard level-${level}" data-id="${p.id}">
+          <div class="mcard-head"><span class="dot"></span><h3>${escapeHtml(p.name)}</h3></div>
+          <div class="mcard-meta">${client?escapeHtml(client.name):'kein Kunde'} · Leitung: ${lead?escapeHtml(lead.name):'—'}</div>
+          ${level==='ok' ? '<div class="mcard-ok">läuft normal</div>' : '<div class="mcard-status">hat Probleme</div>' + involvedLine + structuralLine}
+        </div>`;
+    }).join('');
+    grid.querySelectorAll('.mcard').forEach(card => {
+      card.addEventListener('click', () => {
+        selectedId = card.getAttribute('data-id');
+        renderDetail();
+        openDetailMobile();
+      });
+    });
+    renderStatsManagerHidden();
+  }
+
+  function renderStatsManagerHidden(){
+    document.getElementById('stats').innerHTML = '<span>Manager-Ansicht · nur Projektstatus</span>';
+  }
+
+  // ---------------- detail panel ----------------
+  function findNode(id){
+    if(!id) return null;
+    return state.people.find(p=>p.id===id) || state.clients.find(c=>c.id===id) || state.items.find(i=>i.id===id) || null;
+  }
+  function nodeType(n){
+    if(state.people.includes(n)) return 'person';
+    if(state.clients.includes(n)) return 'client';
+    return n.type;
+  }
+
+  function renderDetail(){
+    const el = document.getElementById('detail-content');
+    const n = findNode(selectedId);
+    document.getElementById('detail').classList.toggle('collapsed', !n);
+    if(!n){ el.innerHTML = '<p class="empty">Noch nichts ausgewählt.<br>Klick auf einen Knoten in der Grafik.</p>'; return; }
+    const type = nodeType(n);
+    const day = timeline.currentDay;
+
+    if(type === 'person'){
+      const loads = computeLoads(day);
+      const l = loads.get(n.id) || {total:0, breakdown:[]};
+      const ratio = l.total / n.capacity;
+      const out = personOutOn(n.id, day);
+      const myAbsences = state.absences.filter(a=>a.personId===n.id);
+      const myIcon = n.icon || defaultIconFor('person', n);
+      el.innerHTML = `
+        <h2>${escapeHtml(n.name)}</h2>
+        <div class="kind">Person</div>
+        ${out ? '<span class="flag out">heute ausgefallen</span>' : ''}
+        <div class="field"><label>Name<input type="text" id="d-name" value="${escapeHtml(n.name)}"></label></div>
+        <div class="field"><label>Icon<select id="d-icon">${ICONS.map(ic=>`<option value="${ic}" ${myIcon===ic?'selected':''}>${ic}</option>`).join('')}</select></label></div>
+        <div class="field"><label>${lbl('Kapazität', 'Wie viel Last diese Person insgesamt tragen kann, bevor sie über 100% liegt.')}<input type="number" id="d-capacity" value="${n.capacity}" min="1"></label></div>
+        <div class="totalload" style="color:${stressColor(ratio)}">${Math.round(ratio*100)}% ausgelastet</div>
+        <div class="hint">${l.total.toFixed(1)} von ${n.capacity} Kapazität belegt (heute)</div>
+        <ul class="breakdown">${l.breakdown.length ? l.breakdown.map(b=>`<li><span>${escapeHtml(b.name)}</span><span class="mono">${b.share.toFixed(1)}</span></li>`).join('') : '<li>Keine Zuordnungen heute</li>'}</ul>
+        ${myAbsences.length ? `<div class="hint" style="margin-top:10px;">Ausfälle: ${myAbsences.map(a=>'Tag '+a.startDay+'–'+a.endDay).join(', ')}</div>` : ''}
+        <div class="delete-row"><button class="ghost" id="d-delete">Person löschen</button></div>
+      `;
+      document.getElementById('d-name').addEventListener('change', e => { n.name = e.target.value || n.name; render(); renderDetail(); });
+      document.getElementById('d-icon').addEventListener('change', e => { n.icon = e.target.value; render(); renderDetail(); });
+      document.getElementById('d-capacity').addEventListener('change', e => { n.capacity = Math.max(1, +e.target.value||1); render(); renderDetail(); });
+      document.getElementById('d-delete').addEventListener('click', () => {
+        state.people = state.people.filter(p=>p.id!==n.id);
+        state.items.forEach(it=>{ it.assignees = it.assignees.filter(id=>id!==n.id); if(it.leadId===n.id) it.leadId=''; });
+        state.absences = state.absences.filter(a=>a.personId!==n.id);
+        selectedId = null; refreshSelects(); renderAbsenceList(); render(); renderDetail();
+      });
+      return;
+    }
+
+    if(type === 'client'){
+      const projects = state.items.filter(i=>i.clientId===n.id);
+      const myIcon = n.icon || defaultIconFor('client', n);
+      el.innerHTML = `
+        <h2>${escapeHtml(n.name)}</h2>
+        <div class="kind">Kunde</div>
+        <div class="field"><label>Name<input type="text" id="d-name" value="${escapeHtml(n.name)}"></label></div>
+        <div class="field"><label>Icon<select id="d-icon">${ICONS.map(ic=>`<option value="${ic}" ${myIcon===ic?'selected':''}>${ic}</option>`).join('')}</select></label></div>
+        <div class="hint">${projects.length} Projekt${projects.length===1?'':'e'} verknüpft</div>
+        <ul class="breakdown">${projects.map(p=>`<li><span>${escapeHtml(p.name)}</span></li>`).join('') || ''}</ul>
+        <div class="delete-row"><button class="ghost" id="d-delete">Kunde löschen</button></div>
+      `;
+      document.getElementById('d-name').addEventListener('change', e => { n.name = e.target.value || n.name; render(); renderDetail(); });
+      document.getElementById('d-icon').addEventListener('change', e => { n.icon = e.target.value; render(); renderDetail(); });
+      document.getElementById('d-delete').addEventListener('click', () => {
+        state.clients = state.clients.filter(c=>c.id!==n.id);
+        state.items.forEach(it=>{ if(it.clientId===n.id) it.clientId=''; });
+        selectedId = null; refreshSelects(); render(); renderDetail();
+      });
+      return;
+    }
+
+    const isProject = type === 'project';
+
+    if(managerMode && isProject){
+      const log = buildProjectLog(n).filter(e => e.level === 'error');
+      el.innerHTML = `
+        <h2>${escapeHtml(n.name)}</h2>
+        <div class="kind">Protokoll · nur Fehler</div>
+        ${log.length === 0 ? '<p class="hint" style="margin-top:16px;">Keine Fehler im gesamten Zeitraum.</p>' : log.map(e => `
+          <div class="logentry error">
+            <div class="day">Tag ${e.startDay}${e.endDay!==e.startDay?'–'+e.endDay:''}</div>
+            <div class="detail">${e.structural ? 'Kein Team zugeordnet' : 'Beteiligt: ' + e.involved.map(escapeHtml).join(', ')}</div>
+          </div>`).join('')}
+      `;
+      return;
+    }
+
+    const peopleOptions = state.people.map(p => {
+      const out = personOutOn(p.id, day);
+      const checked = n.assignees.includes(p.id);
+      const canWeight = checked && (isProject || n.shareable);
+      const w = weightOf(n, p.id);
+      return `<div class="assign-row">
+        <label class="assign-check"><input type="checkbox" data-pid="${p.id}" ${checked?'checked':''}> <span class="assignee-name">${escapeHtml(p.name)}${out?' (heute draußen)':''}</span></label>
+        ${canWeight ? `<input type="number" class="weight-input" data-wpid="${p.id}" value="${w}" min="0.1" step="0.5" title="Anteil relativ zu den anderen Zugeordneten — höher = bekommt mehr von der Last ab">` : ''}
+      </div>`;
+    }).join('');
+    const myIcon = n.icon || defaultIconFor(type, n);
+    const fullLog = isProject ? buildProjectLog(n) : null;
+    const phases = n.phases || [];
+    const phaseList = phases.map(ph => `
+      <div class="absitem"><span>Tag ${ph.startDay}–${ph.endDay} · Last ${ph.load}</span><button data-phid="${ph.id}">✕</button></div>
+    `).join('');
+
+    el.innerHTML = `
+      <h2>${escapeHtml(n.name)}</h2>
+      <div class="kind">${isProject ? 'Geplantes Projekt' : (n.shareable ? 'Ungeplante Aufgabe · teilbar' : 'Ungeplante Aufgabe · nicht teilbar')}</div>
+      ${n.__blocked || n.__leadOut ? '<span class="flag out">heute blockiert</span>' : ''}
+      <div class="field"><label>${lbl('Name')}<input type="text" id="d-name" value="${escapeHtml(n.name)}"></label></div>
+      <div class="field"><label>${lbl('Icon')}<select id="d-icon">${ICONS.map(ic=>`<option value="${ic}" ${myIcon===ic?'selected':''}>${ic}</option>`).join('')}</select></label></div>
+      <div class="field"><label>${lbl('Last', 'Grundlast dieses '+(isProject?'Projekts':'Aufgabe')+'. Wird — sofern zugeordnet — auf mehrere Personen aufgeteilt, oder komplett von einer getragen, wenn nicht teilbar. Lastphasen unten können sie zeitweise überschreiben.')}<input type="number" id="d-load" value="${n.load}" min="1" max="30"></label></div>
+      ${!isProject ? `<div class="field"><label class="checkrow"><input type="checkbox" id="d-shareable" ${n.shareable?'checked':''}> teilbar auf mehrere Personen ${infoDot('Teilbare Aufgaben verteilen ihre Last automatisch auf alle zugeordneten Personen. Nicht teilbare Aufgaben hängen komplett an einer Person und lassen sich nicht einfach abgeben — fällt die Person aus, bleibt die Aufgabe liegen (blockiert).')}</label></div>` : ''}
+      ${isProject ? `
+        <div class="field"><label>${lbl('Kunde', 'Für welchen Kunden das Projekt läuft. Rein informativ, hat keinen Einfluss auf die Auslastung.')} <select id="d-client"><option value="">— keiner —</option>${state.clients.map(c=>`<option value="${c.id}" ${n.clientId===c.id?'selected':''}>${escapeHtml(c.name)}</option>`).join('')}</select></label></div>
+        <div class="field"><label>${lbl('Projektleitung', 'Wer die Projektleitung übernimmt. Bekommt zusätzlich zum eigenen Arbeitsanteil den Leitungsaufwand oben drauf. Fällt sie aus, gilt das Projekt als blockiert.')} <select id="d-lead"><option value="">— keine —</option>${state.people.map(p=>`<option value="${p.id}" ${n.leadId===p.id?'selected':''}>${escapeHtml(p.name)}</option>`).join('')}</select></label></div>
+        <div class="field"><label>${lbl('Leitungsaufwand', 'Zusätzliche, feste Last nur für die Projektleitung — oben auf ihren normalen Anteil am Projekt.')}<input type="number" id="d-overhead" value="${n.leadOverhead||0}" min="0"></label></div>
+      ` : ''}
+      <div class="field">
+        <label>${lbl('Zugeordnete Personen'+(!isProject && !n.shareable ? ' (max. 1, nicht teilbar)' : ''), 'Wer an diesem Punkt mitarbeitet. Bei teilbaren Projekten/Aufgaben kannst du rechts pro Person einen Anteil einstellen — höherer Wert heißt, diese Person übernimmt mehr von der Last als die anderen.')}</label>
+        <div class="assignlist">${peopleOptions || '<span class="hint">Noch keine Personen angelegt.</span>'}</div>
+      </div>
+      <div class="field">
+        <label>${lbl('Lastphasen', 'Zeitlich begrenzte Ausnahmen: in diesem Tag-Zeitraum gilt statt der Grundlast der hier angegebene Wert. So lässt sich zeigen, dass ein Projekt phasenweise deutlich fordernder oder ruhiger ist.')}</label>
+        <div class="abslist">${phaseList || '<span class="hint">Keine Phasen — es gilt durchgehend die Grundlast.</span>'}</div>
+        <div class="row2" style="margin-top:6px;">
+          <input type="number" id="phase-start" placeholder="Von Tag" min="1" style="min-height:32px;flex:1;">
+          <input type="number" id="phase-end" placeholder="Bis Tag" min="1" style="min-height:32px;flex:1;">
+          <input type="number" id="phase-load" placeholder="Last" min="1" style="min-height:32px;flex:1;">
+        </div>
+        <button class="ghost" id="phase-add" type="button" style="margin-top:6px;">+ Phase hinzufügen</button>
+      </div>
+      <div class="delete-row"><button class="ghost" id="d-delete">${isProject?'Projekt':'Aufgabe'} löschen</button></div>
+      ${isProject ? `
+        <div class="field" style="margin-top:18px;">
+          <label>Protokoll (kompletter Zeitraum)</label>
+          ${fullLog.map(e => `
+            <div class="logentry ${e.level}">
+              <div class="day">Tag ${e.startDay}${e.endDay!==e.startDay?'–'+e.endDay:''}</div>
+              <div class="detail">${e.level==='ok' ? 'läuft normal' : (e.structural ? 'Kein Team zugeordnet' : e.detail.join(', '))}</div>
+            </div>`).join('')}
+        </div>
+      ` : ''}
+    `;
+
+    document.getElementById('d-name').addEventListener('change', e => { n.name = e.target.value || n.name; render(); renderDetail(); });
+    document.getElementById('d-icon').addEventListener('change', e => { n.icon = e.target.value; render(); renderDetail(); });
+    document.getElementById('d-load').addEventListener('change', e => { n.load = Math.max(1, +e.target.value||1); render(); renderDetail(); });
+    if(!isProject){
+      document.getElementById('d-shareable').addEventListener('change', e => {
+        n.shareable = e.target.checked;
+        if(!n.shareable && n.assignees.length > 1) n.assignees = n.assignees.slice(0,1);
+        render(); renderDetail();
+      });
+    }
+    if(isProject){
+      document.getElementById('d-client').addEventListener('change', e => { n.clientId = e.target.value; render(); renderDetail(); });
+      document.getElementById('d-lead').addEventListener('change', e => { n.leadId = e.target.value; render(); renderDetail(); });
+      document.getElementById('d-overhead').addEventListener('change', e => { n.leadOverhead = Math.max(0, +e.target.value||0); render(); renderDetail(); });
+    }
+    el.querySelectorAll('.assignlist input[type=checkbox]').forEach(cb => {
+      cb.addEventListener('change', e => {
+        const pid = e.target.getAttribute('data-pid');
+        if(!n.weights) n.weights = {};
+        if(e.target.checked){
+          if(!isProject && !n.shareable) n.assignees = [pid];
+          else if(!n.assignees.includes(pid)) n.assignees.push(pid);
+          if(n.weights[pid] == null) n.weights[pid] = 1;
+        } else {
+          n.assignees = n.assignees.filter(id=>id!==pid);
+          delete n.weights[pid];
         }
+        render(); renderDetail();
+      });
+    });
+    el.querySelectorAll('.weight-input').forEach(inp => {
+      inp.addEventListener('change', e => {
+        const pid = e.target.getAttribute('data-wpid');
+        if(!n.weights) n.weights = {};
+        n.weights[pid] = Math.max(0.1, +e.target.value || 1);
+        render(); renderDetail();
+      });
+    });
+    document.getElementById('phase-add').addEventListener('click', () => {
+      const s = Math.max(1, +document.getElementById('phase-start').value || 1);
+      const eDay = Math.max(s, +document.getElementById('phase-end').value || s);
+      const l = Math.max(1, +document.getElementById('phase-load').value || n.load);
+      if(!n.phases) n.phases = [];
+      n.phases.push({id: uid('ph'), startDay:s, endDay:eDay, load:l});
+      render(); renderDetail();
+    });
+    el.querySelectorAll('.abslist button[data-phid]').forEach(b => {
+      b.addEventListener('click', () => {
+        n.phases = (n.phases||[]).filter(ph => ph.id !== b.getAttribute('data-phid'));
+        render(); renderDetail();
+      });
+    });
+    document.getElementById('d-delete').addEventListener('click', () => {
+      state.items = state.items.filter(i=>i.id!==n.id);
+      selectedId = null; render(); renderDetail();
+    });
+  }
 
-        // Ansicht wechseln (Fokus, Übersicht, Export)
-        function switchView(viewName) {
-            document.getElementById("view-focus").classList.add("hidden");
-            document.getElementById("view-overview").classList.add("hidden");
-            document.getElementById("view-export").classList.add("hidden");
+  // ---------------- forms ----------------
+  function refreshSelects(){
+    const clientSel = document.querySelector('#form-project select[name=clientId]');
+    const leadSel = document.querySelector('#form-project select[name=leadId]');
+    const absSel = document.querySelector('#form-absence select[name=personId]');
+    clientSel.innerHTML = '<option value="">— keiner —</option>' + state.clients.map(c=>`<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('');
+    leadSel.innerHTML = '<option value="">— keine —</option>' + state.people.map(p=>`<option value="${p.id}">${escapeHtml(p.name)}</option>`).join('');
+    absSel.innerHTML = state.people.map(p=>`<option value="${p.id}">${escapeHtml(p.name)}</option>`).join('') || '<option value="">— erst Person anlegen —</option>';
+  }
 
-            // Standard-Design für unselektierte Buttons im Pille-Stil
-            const baseClass = "px-2 py-2 text-xs md:text-sm rounded font-cinzel font-bold text-center transition text-parchment-dark/70 hover:text-white";
-            const activeClass = "px-2 py-2 text-xs md:text-sm rounded font-cinzel font-bold text-center transition bg-dragon-red text-white shadow-md";
+  document.getElementById('form-person').addEventListener('submit', e => {
+    e.preventDefault();
+    const f = new FormData(e.target);
+    state.people.push({id: uid('p'), name: f.get('name').trim(), capacity: Math.max(1, +f.get('capacity')||10)});
+    e.target.reset(); e.target.capacity.value = 10;
+    refreshSelects(); render(); renderDetail();
+  });
+  document.getElementById('form-client').addEventListener('submit', e => {
+    e.preventDefault();
+    const f = new FormData(e.target);
+    state.clients.push({id: uid('c'), name: f.get('name').trim()});
+    e.target.reset();
+    refreshSelects(); render(); renderDetail();
+  });
+  document.getElementById('form-project').addEventListener('submit', e => {
+    e.preventDefault();
+    const f = new FormData(e.target);
+    state.items.push({id: uid('proj'), type:'project', name: f.get('name').trim(), load: Math.max(1,+f.get('load')||5),
+      shareable:true, clientId:f.get('clientId')||'', leadId:f.get('leadId')||'', leadOverhead:Math.max(0,+f.get('leadOverhead')||0), assignees:[], weights:{}, phases:[]});
+    e.target.reset(); e.target.load.value=5; e.target.leadOverhead.value=3;
+    render(); renderDetail();
+  });
+  document.getElementById('form-task').addEventListener('submit', e => {
+    e.preventDefault();
+    const f = new FormData(e.target);
+    state.items.push({id: uid('task'), type:'task', name: f.get('name').trim(), load: Math.max(1,+f.get('load')||3),
+      shareable: f.get('shareable')==='on', clientId:'', leadId:'', leadOverhead:0, assignees:[], weights:{}, phases:[]});
+    e.target.reset(); e.target.load.value=3; e.target.shareable.checked=true;
+    render(); renderDetail();
+  });
+  document.getElementById('form-absence').addEventListener('submit', e => {
+    e.preventDefault();
+    const f = new FormData(e.target);
+    const pid = f.get('personId');
+    if(!pid) return;
+    let start = Math.max(1, +f.get('startDay')||1);
+    let end = Math.max(start, +f.get('endDay')||start);
+    state.absences.push({id: uid('abs'), personId: pid, startDay:start, endDay:end, note: (f.get('note')||'').trim()});
+    e.target.reset(); e.target.startDay.value=1; e.target.endDay.value=1;
+    renderAbsenceList(); render();
+  });
 
-            document.getElementById("btn-view-focus").className = baseClass;
-            document.getElementById("btn-view-overview").className = baseClass;
-            document.getElementById("btn-view-export").className = baseClass;
+  // ---------------- timeline controls ----------------
+  document.getElementById('dayrange').addEventListener('input', e => {
+    timeline.currentDay = +e.target.value; render(false);
+  });
+  document.getElementById('totalDaysInput').addEventListener('change', e => {
+    timeline.totalDays = Math.max(2, Math.min(90, +e.target.value||14));
+    if(timeline.currentDay > timeline.totalDays-1) timeline.currentDay = timeline.totalDays-1;
+    render(false);
+  });
+  document.getElementById('playbtn').addEventListener('click', () => {
+    if(playTimer){
+      clearInterval(playTimer); playTimer = null;
+      document.getElementById('playbtn').textContent = '▶';
+    } else {
+      document.getElementById('playbtn').textContent = '⏸';
+      playTimer = setInterval(() => {
+        timeline.currentDay = (timeline.currentDay + 1) % timeline.totalDays;
+        render(false);
+      }, 850);
+    }
+  });
 
-            if (viewName === 'focus') {
-                document.getElementById("view-focus").classList.remove("hidden");
-                document.getElementById("btn-view-focus").className = activeClass;
-                renderFocusQuestion();
-            } else if (viewName === 'overview') {
-                document.getElementById("view-overview").classList.remove("hidden");
-                document.getElementById("btn-view-overview").className = activeClass;
-                renderOverview();
-            } else if (viewName === 'export') {
-                document.getElementById("view-export").classList.remove("hidden");
-                document.getElementById("btn-view-export").className = activeClass;
-                generateExport(currentExportFormat); // Nutzt das zuvor eingestellte Format
-            }
-        }
+  // ---------------- mode toggle ----------------
+  // ---------------- sort / undo ----------------
+  let preSortPositions = null;
 
-        // Fokus Frage rendern
-        function renderFocusQuestion() {
-            if (activeQueue.length === 0) {
-                initializeDefaultQueue();
-            }
+  document.getElementById('sortBtn').addEventListener('click', () => {
+    preSortPositions = new Map();
+    nodeById.forEach((n, id) => { preSortPositions.set(id, {x:n.x, y:n.y, fx:n.fx, fy:n.fy}); });
+    nodeById.forEach(n => { n.fx = null; n.fy = null; });
+    document.getElementById('undoBtn').disabled = false;
+    render(true);
+  });
 
-            // Sicherstellen, dass der Index im Rahmen liegt
-            if (currentQueueIndex >= activeQueue.length) {
-                currentQueueIndex = 0;
-            } else if (currentQueueIndex < 0) {
-                currentQueueIndex = activeQueue.length - 1;
-            }
+  document.getElementById('undoBtn').addEventListener('click', () => {
+    if(!preSortPositions) return;
+    nodeById.forEach((n, id) => {
+      const p = preSortPositions.get(id);
+      if(p){ n.x = p.x; n.y = p.y; n.fx = p.fx; n.fy = p.fy; }
+    });
+    preSortPositions = null;
+    document.getElementById('undoBtn').disabled = true;
+    render(true);
+  });
 
-            const currentId = activeQueue[currentQueueIndex];
-            const questionObj = questionCatalog.find(q => q.id === currentId);
+  function setViewMode(mode){ // 'team' | 'manager' | 'employee'
+    managerMode = (mode === 'manager');
+    employeeMode = (mode === 'employee');
+    document.body.classList.toggle('manager-mode', managerMode);
+    document.body.classList.toggle('employee-mode', employeeMode);
+    document.getElementById('modeToggle').textContent = managerMode ? 'Team-Ansicht' : 'Manager-Ansicht';
+    document.getElementById('modeToggle').classList.toggle('active', managerMode);
+    document.getElementById('employeeToggle').textContent = employeeMode ? 'Team-Ansicht' : 'Mitarbeiter-Ansicht';
+    document.getElementById('employeeToggle').classList.toggle('active', employeeMode);
+    selectedId = null;
+    render();
+    renderDetail();
+  }
+  document.getElementById('modeToggle').addEventListener('click', () => setViewMode(managerMode ? 'team' : 'manager'));
+  document.getElementById('employeeToggle').addEventListener('click', () => setViewMode(employeeMode ? 'team' : 'employee'));
 
-            if (!questionObj) return;
+  // ---------------- mobile panel toggles ----------------
+  function openDetailMobile(){
+    if(window.innerWidth <= 900) document.getElementById('detail').classList.add('open');
+  }
+  document.getElementById('openSidebar').addEventListener('click', () => document.getElementById('sidebar').classList.add('open'));
+  document.getElementById('closeSidebar').addEventListener('click', () => document.getElementById('sidebar').classList.remove('open'));
+  document.getElementById('closeDetail').addEventListener('click', () => document.getElementById('detail').classList.remove('open'));
 
-            // Deutsche Übersetzung für UI Kategorien
-            let displayCategory = questionObj.category;
-            if (displayCategory === "Story") displayCategory = "📖 Story";
-            else if (displayCategory === "Locations") displayCategory = "🏰 Orte";
-            else if (displayCategory === "Characters") displayCategory = "👥 Charaktere";
-            else if (displayCategory === "Enemies") displayCategory = "⚔️ Gegner";
-            else if (displayCategory === "Treasure") displayCategory = "💎 Schätze";
-            else if (displayCategory === "Rule Check") displayCategory = "📜 Regeln";
-            else if (displayCategory === "Refresher") displayCategory = "🧠 Auffrischung";
+  window.addEventListener('resize', () => render());
 
-            document.getElementById("focus-category-badge").textContent = displayCategory;
-            document.getElementById("focus-question-text").textContent = questionObj.text;
-            document.getElementById("focus-queue-index").textContent = `${currentQueueIndex + 1} / ${activeQueue.length}`;
+  // ---------------- right-click add menu ----------------
+  const ctxmenu = document.getElementById('ctxmenu');
 
-            // Antwortfeld füllen
-            const textInput = document.getElementById("focus-answer-input");
-            textInput.value = answers[currentId] || "";
-        }
+  function showCtxMenu(clientX, clientY, gx, gy){
+    const menuW = 180, menuH = 160;
+    const x = Math.min(clientX, window.innerWidth - menuW - 8);
+    const y = Math.min(clientY, window.innerHeight - menuH - 8);
+    ctxmenu.style.left = x + 'px';
+    ctxmenu.style.top = y + 'px';
+    ctxmenu.style.display = 'flex';
+    ctxmenu.dataset.gx = gx;
+    ctxmenu.dataset.gy = gy;
+  }
+  function hideCtxMenu(){ ctxmenu.style.display = 'none'; }
 
-        // Antwort im Fokusmodus beim Tippen speichern
-        function saveCurrentFocusAnswer() {
-            const currentId = activeQueue[currentQueueIndex];
-            const textVal = document.getElementById("focus-answer-input").value;
-            answers[currentId] = textVal;
-            saveData();
-        }
+  svg.on('click', function(ev){
+    if(ev.target !== svg.node() && !ev.target.classList.contains('zoom-root')) return;
+    selectedId = null; hoveredId = null;
+    applyFocus();
+    renderDetail();
+  });
 
-        // Nächste Frage
-        function nextQuestion() {
-            currentQueueIndex++;
-            if (currentQueueIndex >= activeQueue.length) {
-                currentQueueIndex = 0;
-            }
-            saveData();
-            renderFocusQuestion();
-        }
+  svg.on('contextmenu', function(ev){
+    ev.preventDefault();
+    const [mx, my] = d3.pointer(ev, svg.node());
+    const t = d3.zoomTransform(svg.node());
+    const [gx, gy] = t.invert([mx, my]);
+    showCtxMenu(ev.clientX, ev.clientY, gx, gy);
+  });
 
-        // Vorherige Frage
-        function prevQuestion() {
-            currentQueueIndex--;
-            if (currentQueueIndex < 0) {
-                currentQueueIndex = activeQueue.length - 1;
-            }
-            saveData();
-            renderFocusQuestion();
-        }
+  function quickAdd(kind, gx, gy){
+    let id;
+    if(kind === 'person'){
+      id = uid('p'); state.people.push({id, name:'Neue Person', capacity:10});
+    } else if(kind === 'client'){
+      id = uid('c'); state.clients.push({id, name:'Neuer Kunde'});
+    } else if(kind === 'project'){
+      id = uid('proj'); state.items.push({id, type:'project', name:'Neues Projekt', load:5, shareable:true, clientId:'', leadId:'', leadOverhead:3, assignees:[], weights:{}, phases:[]});
+    } else if(kind === 'task'){
+      id = uid('task'); state.items.push({id, type:'task', name:'Neue Aufgabe', load:3, shareable:true, clientId:'', leadId:'', leadOverhead:0, assignees:[], weights:{}, phases:[]});
+    } else return;
+    pendingPositions.set(id, {x:gx, y:gy});
+    selectedId = id;
+    refreshSelects();
+    render();
+    renderDetail();
+    openDetailMobile();
+  }
 
-        // Eine Frage nach hinten schieben
-        function postponeCurrentQuestion() {
-            if (activeQueue.length <= 1) {
-                return;
-            }
+  ctxmenu.querySelectorAll('button[data-kind]').forEach(b => {
+    b.addEventListener('click', () => {
+      quickAdd(b.getAttribute('data-kind'), +ctxmenu.dataset.gx, +ctxmenu.dataset.gy);
+      hideCtxMenu();
+    });
+  });
+  document.addEventListener('click', e => { if(!ctxmenu.contains(e.target)) hideCtxMenu(); });
+  document.addEventListener('scroll', hideCtxMenu, true);
 
-            const currentId = activeQueue[currentQueueIndex];
-            
-            // Entferne an aktueller Position
-            activeQueue.splice(currentQueueIndex, 1);
-            
-            // Füge am Ende der Queue wieder an
-            activeQueue.push(currentId);
-            
-            // Den Index anpassen
-            if (currentQueueIndex >= activeQueue.length) {
-                currentQueueIndex = 0;
-            }
+  // ---------------- seed example ----------------
+  function seedDemoData(){
+    const anna  = {id: uid('p'), name:'Anna',  capacity:10};
+    const ben   = {id: uid('p'), name:'Ben',   capacity:10};
+    const carla = {id: uid('p'), name:'Carla', capacity:10};
+    const david = {id: uid('p'), name:'David', capacity:10};
+    const elif  = {id: uid('p'), name:'Elif',  capacity:8};
+    state.people.push(anna, ben, carla, david, elif);
 
-            saveData();
-            renderFocusQuestion();
-        }
+    const kundeX = {id: uid('c'), name:'Kunde X'};
+    const kundeY = {id: uid('c'), name:'Kunde Y'};
+    state.clients.push(kundeX, kundeY);
 
-        // Übersichts-Liste rendern
-        function renderOverview() {
-            const container = document.getElementById("overview-categories-container");
-            container.innerHTML = "";
+    state.items.push({id: uid('proj'), type:'project', name:'Website Relaunch', load:6, shareable:true, clientId:kundeX.id, leadId:anna.id, leadOverhead:2, assignees:[anna.id, ben.id], weights:{[anna.id]:1.5, [ben.id]:1}, phases:[]});
+    state.items.push({id: uid('proj'), type:'project', name:'App Migration', load:7, shareable:true, clientId:kundeY.id, leadId:carla.id, leadOverhead:2, assignees:[carla.id, david.id], weights:{}, phases:[{id:uid('ph'), startDay:9, endDay:11, load:12}]});
+    state.items.push({id: uid('proj'), type:'project', name:'Interne Tools', load:4, shareable:true, clientId:'', leadId:david.id, leadOverhead:1, assignees:[david.id, elif.id], weights:{}, phases:[]});
 
-            // Gruppiere Fragen nach Kategorien
-            const categories = ["Story", "Locations", "Characters", "Enemies", "Treasure", "Rule Check", "Refresher"];
-            const catTranslations = {
-                "Story": "📖 Story",
-                "Locations": "🏰 Orte / Locations",
-                "Characters": "👥 Charaktere / NPCs",
-                "Enemies": "⚔️ Gegner / Begegnungen",
-                "Treasure": "💎 Schätze / Belohnung",
-                "Rule Check": "📜 Regelüberprüfung",
-                "Refresher": "🧠 Auffrischung"
-            };
+    state.items.push({id: uid('task'), type:'task', name:'Server-Ausfall', load:5, shareable:false, clientId:'', leadId:'', leadOverhead:0, assignees:[ben.id], weights:{}, phases:[]});
+    state.items.push({id: uid('task'), type:'task', name:'Kunden-Hotfix', load:4, shareable:false, clientId:'', leadId:'', leadOverhead:0, assignees:[david.id], weights:{}, phases:[]});
+    state.items.push({id: uid('task'), type:'task', name:'Doku aktualisieren', load:2, shareable:true, clientId:'', leadId:'', leadOverhead:0, assignees:[], weights:{}, phases:[]});
+    state.items.push({id: uid('task'), type:'task', name:'Onboarding neue Mitarbeiterin', load:3, shareable:true, clientId:'', leadId:'', leadOverhead:0, assignees:[elif.id, anna.id], weights:{}, phases:[]});
 
-            categories.forEach(cat => {
-                const catQuestions = questionCatalog.filter(q => q.category === cat);
-                
-                const catSection = document.createElement("div");
-                catSection.className = "border-b border-dragon-accent/50 pb-4 last:border-0";
+    state.absences.push({id: uid('abs'), personId: ben.id, startDay:3, endDay:4, note:'krank'});
+    state.absences.push({id: uid('abs'), personId: carla.id, startDay:6, endDay:8, note:'Urlaub'});
+  }
 
-                const title = document.createElement("h3");
-                title.className = "font-cinzel font-bold text-base md:text-lg text-dragon-red mb-3";
-                title.textContent = catTranslations[cat] || cat;
-                catSection.appendChild(title);
+  // ---------------- persistence (localStorage autosave + JSON export/import) ----------------
+  const STORAGE_KEY = 'loadline_state_v1';
 
-                const listContainer = document.createElement("div");
-                listContainer.className = "space-y-3";
+  function serializeState(){
+    return {
+      people: state.people, clients: state.clients, items: state.items,
+      absences: state.absences, totalDays: timeline.totalDays
+    };
+  }
+  function saveLocal(){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(serializeState())); } catch(e){ /* storage unavailable — fails silently */ }
+  }
+  function loadLocal(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch(e){ return null; }
+  }
+  function applyState(data){
+    state.people = Array.isArray(data.people) ? data.people : [];
+    state.clients = Array.isArray(data.clients) ? data.clients : [];
+    state.items = Array.isArray(data.items) ? data.items : [];
+    state.absences = Array.isArray(data.absences) ? data.absences : [];
+    timeline.totalDays = Math.max(2, Math.min(90, +data.totalDays || 14));
+    timeline.currentDay = 0;
+    let maxN = 0;
+    [...state.people, ...state.clients, ...state.items, ...state.absences].forEach(o => {
+      const m = /_(\d+)$/.exec(o.id || ''); if(m) maxN = Math.max(maxN, +m[1]);
+    });
+    counter = maxN + 1;
+    selectedId = null;
+    pendingPositions.clear(); nodeById.clear();
+    if(playTimer){ clearInterval(playTimer); playTimer = null; document.getElementById('playbtn').textContent = '▶'; }
+  }
 
-                catQuestions.forEach((q, idx) => {
-                    const hasAnswer = answers[q.id] && answers[q.id].trim().length > 0;
-                    
-                    const itemDiv = document.createElement("div");
-                    itemDiv.className = `p-3 rounded-lg border ${hasAnswer ? 'border-green-300 bg-green-50/50' : 'border-dragon-accent/20 bg-white/30'} transition`;
+  const savedState = loadLocal();
+  if(savedState){ applyState(savedState); } else { seedDemoData(); }
 
-                    const labelDiv = document.createElement("div");
-                    labelDiv.className = "flex justify-between items-start gap-2 mb-1.5";
+  // ---------------- JSON export/import ----------------
+  document.getElementById('exportBtn').addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify(serializeState(), null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'loadline.json'; a.click();
+    URL.revokeObjectURL(url);
+  });
+  document.getElementById('importBtn').addEventListener('click', () => document.getElementById('importFile').click());
+  document.getElementById('importFile').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        applyState(JSON.parse(reader.result));
+        saveLocal();
+        refreshSelects(); renderAbsenceList(); render(); renderDetail();
+      } catch(err){ alert('Konnte die Datei nicht lesen: ' + err.message); }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  });
 
-                    const qText = document.createElement("span");
-                    qText.className = "text-xs md:text-sm font-semibold text-dragon-charcoal/90";
-                    qText.textContent = `${idx + 1}. ${q.text}`;
-                    labelDiv.appendChild(qText);
+  refreshSelects();
+  renderAbsenceList();
+  render();
+  renderDetail();
+  loadIconSprite();
 
-                    // Badge für Status
-                    const statusBadge = document.createElement("span");
-                    statusBadge.className = `text-[8px] md:text-[10px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded flex-shrink-0 ${hasAnswer ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800'}`;
-                    statusBadge.textContent = hasAnswer ? "Ausgefüllt" : "Offen";
-                    labelDiv.appendChild(statusBadge);
-
-                    itemDiv.appendChild(labelDiv);
-
-                    // Direktes Bearbeitungsfeld in der Übersicht
-                    const inlineArea = document.createElement("textarea");
-                    inlineArea.className = "w-full p-2 text-xs md:text-sm border border-dragon-accent/40 rounded bg-white/70 focus:bg-white focus:outline-none focus:border-dragon-red transition";
-                    inlineArea.rows = 2;
-                    inlineArea.placeholder = "Antwort verfassen...";
-                    inlineArea.value = answers[q.id] || "";
-                    inlineArea.oninput = function() {
-                        answers[q.id] = this.value;
-                        if (this.value.trim().length > 0) {
-                            statusBadge.className = "text-[8px] md:text-[10px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded flex-shrink-0 bg-green-100 text-green-800";
-                            statusBadge.textContent = "Ausgefüllt";
-                            itemDiv.className = "p-3 rounded-lg border border-green-300 bg-green-50/50 transition";
-                        } else {
-                            statusBadge.className = "text-[8px] md:text-[10px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded flex-shrink-0 bg-orange-100 text-orange-800";
-                            statusBadge.textContent = "Offen";
-                            itemDiv.className = "p-3 rounded-lg border border-dragon-accent/20 bg-white/30 transition";
-                        }
-                        saveData();
-                    };
-
-                    itemDiv.appendChild(inlineArea);
-                    listContainer.appendChild(itemDiv);
-                });
-
-                catSection.appendChild(listContainer);
-                container.appendChild(catSection);
-            });
-        }
-
-        // Export Generierung und UI-Highlighting für die Formate
-        function generateExport(format) {
-            currentExportFormat = format;
-            const sessionTitle = document.getElementById("session-title").value || "D&D Session";
-            let out = "";
-
-            // Design der Format-Buttons anpassen
-            const activeBtnClass = "px-2 py-2 bg-dragon-red text-white rounded font-cinzel font-bold transition text-xs text-center shadow";
-            const inactiveBtnClass = "px-2 py-2 bg-dragon-accent text-dragon-charcoal rounded font-cinzel font-bold transition text-xs text-center shadow hover:bg-dragon-gold/20";
-            
-            document.getElementById("btn-export-markdown").className = (format === 'markdown') ? activeBtnClass : inactiveBtnClass;
-            document.getElementById("btn-export-plain").className = (format === 'plain') ? activeBtnClass : inactiveBtnClass;
-            document.getElementById("btn-export-json").className = (format === 'json') ? activeBtnClass : inactiveBtnClass;
-
-            if (format === 'markdown') {
-                out += `# DM Session Prep: ${sessionTitle}\n`;
-                out += `*Generiert am ${new Date().toLocaleDateString('de-DE')}*\n\n`;
-
-                let currentCat = "";
-                questionCatalog.forEach(q => {
-                    if (q.category !== currentCat) {
-                        currentCat = q.category;
-                        out += `\n## ${currentCat.toUpperCase()}\n\n`;
-                    }
-                    out += `### ${q.text}\n`;
-                    out += `${answers[q.id] || "_Noch nicht beantwortet_"}\n\n`;
-                });
-            } else if (format === 'plain') {
-                out += `DM SESSION PREP: ${sessionTitle}\n`;
-                out += `Datum: ${new Date().toLocaleDateString('de-DE')}\n`;
-                out += `==================================================\n\n`;
-
-                let currentCat = "";
-                questionCatalog.forEach(q => {
-                    if (q.category !== currentCat) {
-                        currentCat = q.category;
-                        out += `\n[ ${currentCat.toUpperCase()} ]\n`;
-                        out += `--------------------------------------------------\n`;
-                    }
-                    out += `F: ${q.text}\n`;
-                    out += `A: ${answers[q.id] || "Keine Angabe"}\n\n`;
-                });
-            } else if (format === 'json') {
-                // Strukturiertes JSON mit Meta-Informationen für perfekten Re-Import
-                const exportObj = {
-                    appName: "DM Session Prep Helper",
-                    version: "1.2.0",
-                    exportDate: new Date().toISOString(),
-                    sessionTitle: sessionTitle,
-                    activeQueue: activeQueue,
-                    answers: answers
-                };
-                out = JSON.stringify(exportObj, null, 2);
-            }
-
-            document.getElementById("export-textarea").value = out;
-        }
-
-        // Automatische Download-Funktion für die generierte Datei
-        function downloadExportFile() {
-            const content = document.getElementById("export-textarea").value;
-            const sessionTitle = document.getElementById("session-title").value || "dnd_session";
-            const sanitizedTitle = sessionTitle.toLowerCase().replace(/[^a-z0-9]/g, "_");
-            
-            let filename = `${sanitizedTitle}_prep`;
-            let mimeType = "text/plain";
-
-            if (currentExportFormat === 'markdown') {
-                filename += ".md";
-                mimeType = "text/markdown";
-            } else if (currentExportFormat === 'plain') {
-                filename += ".txt";
-                mimeType = "text/plain";
-            } else if (currentExportFormat === 'json') {
-                filename += ".json";
-                mimeType = "application/json";
-            }
-
-            const blob = new Blob([content], { type: `${mimeType};charset=utf-8` });
-            const url = URL.createObjectURL(blob);
-            
-            const link = document.createElement("a");
-            link.setAttribute("href", url);
-            link.setAttribute("download", filename);
-            link.style.visibility = 'hidden';
-            
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            showNotification("Datei erfolgreich generiert und heruntergeladen!", "success");
-        }
-
-        // Clipboard kopieren
-        function copyToClipboard() {
-            const textarea = document.getElementById("export-textarea");
-            textarea.select();
-            
-            try {
-                document.execCommand('copy');
-                showNotification("Inhalt erfolgreich in die Zwischenablage kopiert!", "success");
-            } catch (err) {
-                console.error("Kopieren fehlgeschlagen", err);
-                showNotification("Fehler beim Kopieren. Bitte manuell auswählen.", "error");
-            }
-        }
-
-        // Custom Notification Banner anzeigen
-        function showNotification(message, type) {
-            const banner = document.getElementById("notification-banner");
-            banner.textContent = message;
-            banner.classList.remove("hidden");
-
-            if (type === "success") {
-                banner.className = "p-3 rounded-lg text-center font-bold text-sm shadow-md bg-green-100 text-green-800 border border-green-300";
-            } else if (type === "error") {
-                banner.className = "p-3 rounded-lg text-center font-bold text-sm shadow-md bg-red-100 text-red-800 border border-red-300";
-            }
-
-            setTimeout(() => {
-                banner.classList.add("hidden");
-            }, 4000);
-        }
-
-        // Universeller JSON-Daten-Importeur
-        function processImportData(dataObj) {
-            try {
-                // Grundlegende Validierung
-                if (!dataObj || typeof dataObj !== 'object') {
-                    throw new Error("Ungültiges JSON-Objekt");
-                }
-
-                if (!dataObj.answers || typeof dataObj.answers !== 'object') {
-                    throw new Error("Dieses Dokument enthält keine gültigen Antwortstrukturen.");
-                }
-
-                // Daten in den App-State überführen
-                answers = dataObj.answers;
-
-                if (dataObj.sessionTitle && typeof dataObj.sessionTitle === 'string') {
-                    document.getElementById("session-title").value = dataObj.sessionTitle;
-                }
-
-                if (dataObj.activeQueue && Array.isArray(dataObj.activeQueue)) {
-                    // Überprüfen, ob alle IDs in der geladenen Queue valide im Katalog existieren
-                    const validIds = dataObj.activeQueue.filter(id => questionCatalog.some(q => q.id === id));
-                    if (validIds.length > 0) {
-                        activeQueue = validIds;
-                    } else {
-                        initializeDefaultQueue();
-                    }
-                } else {
-                    initializeDefaultQueue();
-                }
-
-                currentQueueIndex = 0; // Nach Import wieder an den Anfang setzen
-
-                // Speichern und alle Ansichten neu zeichnen
-                saveData();
-                renderFocusQuestion();
-                renderOverview();
-                updateProgress();
-
-                showNotification("Sitzungsdaten erfolgreich importiert!", "success");
-                return true;
-            } catch (e) {
-                showNotification(`Import fehlgeschlagen: ${e.message}`, "error");
-                return false;
-            }
-        }
-
-        // Import aus einer hochgeladenen Datei (Option A)
-        function importFromFile(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            document.getElementById("import-file-name").textContent = file.name;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const jsonContent = JSON.parse(e.target.result);
-                    const success = processImportData(jsonContent);
-                    if (success) {
-                        // Input nach erfolgreichem Einlesen leeren
-                        event.target.value = '';
-                    }
-                } catch (err) {
-                    showNotification("Die Datei enthält kein gültiges JSON-Format.", "error");
-                }
-            };
-            reader.readAsText(file);
-        }
-
-        // Import aus dem manuellen Textfeld (Option B)
-        function importFromText() {
-            const rawText = document.getElementById("import-textarea").value.trim();
-            if (!rawText) {
-                showNotification("Bitte füge zuerst JSON-Code in das Textfeld ein.", "error");
-                return;
-            }
-
-            try {
-                const parsedData = JSON.parse(rawText);
-                const success = processImportData(parsedData);
-                if (success) {
-                    // Eingabefeld nach Erfolg leeren
-                    document.getElementById("import-textarea").value = "";
-                }
-            } catch (err) {
-                showNotification("Der eingegebene Text ist kein gültiges JSON.", "error");
-            }
-        }
-
-        // Modal Bestätigung für Reset
-        function confirmReset() {
-            document.getElementById("confirm-modal").classList.remove("hidden");
-        }
-
-        function closeModal() {
-            document.getElementById("confirm-modal").classList.add("hidden");
-        }
-
-        // Session komplett zurücksetzen
-        function resetSession() {
-            answers = {};
-            document.getElementById("session-title").value = "Meine epische Session 1";
-            initializeDefaultQueue();
-            saveData();
-            closeModal();
-            renderFocusQuestion();
-            renderOverview();
-            updateProgress();
-            showNotification("Sitzung wurde vollständig zurückgesetzt.", "success");
-        }
-    </script>
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    });
+  }
+})();
+</script>
 </body>
 </html>
-<!-- 
-CHANGE LOG
-v1.2.0:
-- JSON Export/Import-Schnittstelle hinzugefügt.
-- Unterstützung für den direkten Dateidownload (.md, .txt, .json) über virtuellen Link.
-- Implementierung eines sicheren, validierenden JSON-Imports über:
-  - Option A: Drag/Dateiauswahl-Uploader (.json)
-  - Option B: Textfeld-Uploader für manuelles Einfügen
-- Einführung eines dedizierten Status-Notification-Banners im D&D Design anstelle nativer Alerts.
-- Umbenennung des dritten Navigations-Tabs zu "Export/Import".
-v1.1.0:
-- Optimierung für mobile Bildschirmgrößen (Smartphones / Touchscreens).
-- Konvertierung des Navigations-Menüs zu einer kompakten Segmented Tab Bar.
-- Überarbeitung der Aktionsbuttons im Fokus-Modus in ein flexibles CSS-Raster für bequeme Daumenerreichbarkeit.
-- Dekorative Elemente bei extrem kleinen Breiten ausgeblendet, um den Bearbeitungsbereich zu maximieren.
-- Skalierung von Überschriften, Frage-Texten und Formularen via Tailwind-Klassen angepasst.
-v1.0.0:
-- Initiale Entwicklung der DM Session Prep Web-App.
-- D&D-thematisiertes Pergament-Design mit reibungsloser mobiler Nutzbarkeit (Responsive Web Design).
-- "Fokus-Modus" integriert, um Fragen konzentriert nacheinander zu bearbeiten.
-- "Später beantworten (Nach hinten stellen)" verschiebt Fragen dynamisch ans Ende der Warteschlange.
-- "Übersichts-Modus" mit direkter Inline-Bearbeitungsmöglichkeit implementiert.
-- "Export-Modus" für formatierten Markdown- und Plaintext-Export hinzugefügt.
-- Persistierung der Session über LocalStorage, um versehentlichen Datenverlust zu vermeiden.
-- Vollständige PWA-Konformität mit Manifest und Service Worker.
--->
