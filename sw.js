@@ -1,4 +1,4 @@
-const CACHE_NAME = 'App-cache-v1';
+const CACHE_NAME = 'sesssion-preo-helper-cache-v1';
 const APP_SHELL = [
   './',
   './index.html'
